@@ -3,7 +3,7 @@
 ## SOAD Course Project
 
 ## Team Members
-* Shaik Masihullah bearing roll no S20180010159
+* Shaik Masihullah | S20180010159
 
 ## To run the django application
 ```
