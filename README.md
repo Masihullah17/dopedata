@@ -2,6 +2,9 @@
 
 ## SOAD Course Project
 
+## Team Members
+* Shaik Masihullah
+
 ## To run the django application
 ```
 Activate env :
