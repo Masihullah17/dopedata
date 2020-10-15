@@ -1,3 +1,25 @@
 # DopeData
 
-SOAD Course Project
+## SOAD Course Project
+
+## To run the django application
+```
+Activate env :
+	For Windows :
+		.\env\Scripts\activate
+	For Linux :
+		./env/Scripts/activate
+
+python manage.py runserver
+```
+
+## Project Structure
+
+* **dopedata** - Main Django application name
+* **data** - App containing the models and database work
+* **data/api** - Contains the API
+* **webapp** - App containing the web application
+* **templates** - Contains all the html pages of webapp
+* **static** - Contains all the static files (css, js, images, etc) for webapp
+* **templatetags** - Contains filters to be used in html pages to render better
+* **media** - Contains all images, videos and audios we collect as part of data collection
