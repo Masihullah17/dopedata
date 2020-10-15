@@ -3,7 +3,7 @@
 ## SOAD Course Project
 
 ## Team Members
-* Shaik Masihullah
+* Shaik Masihullah | S20180010159
 
 ## To run the django application
 ```
@@ -17,7 +17,6 @@ python manage.py runserver
 ```
 
 ## Project Structure
-
 * **dopedata** - Main Django application name
 * **data** - App containing the models and database work
 * **data/api** - Contains the API
