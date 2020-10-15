@@ -4,6 +4,7 @@
 
 ## Team Members
 * Shaik Masihullah | S20180010159
+* Shikhar Arya | S20180010162
 
 ## To run the django application
 ```
