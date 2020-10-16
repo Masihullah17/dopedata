@@ -6,6 +6,8 @@
 * Shaik Masihullah | S20180010159
 * Shikhar Arya | S20180010162
 * Rishimanudeep | S20180010062
+* Kavya Nemmoju | S20180010078
+
 ## To run the django application
 ```
 Activate env :
@@ -26,3 +28,6 @@ python manage.py runserver
 * **static** - Contains all the static files (css, js, images, etc) for webapp
 * **templatetags** - Contains filters to be used in html pages to render better
 * **media** - Contains all images, videos and audios we collect as part of data collection
+
+## Resources
+* [**Firebase API**](http://www.lib4dev.in/info/thisbejim/Pyrebase/36919582)

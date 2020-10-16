@@ -147,3 +147,20 @@ MEDIA_ROOT =  os.path.join(BASE_DIR, 'media/')
 
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
+
+
+import pyrebase
+config = {
+	'apiKey': "AIzaSyDLqFMmhIlGDCDWW6sOCTsm4nHQRYn9IWc",
+	'authDomain': "dopedata-2020.firebaseapp.com",
+	'databaseURL': "https://dopedata-2020.firebaseio.com",
+	'projectId': "dopedata-2020",
+	'storageBucket': "dopedata-2020.appspot.com",
+	'messagingSenderId': "152357364863",
+	'appId': "1:152357364863:web:80f65c8e6d9a5deeea4b4a",
+  	'measurementId': "G-W4B8BWFKDQ"
+}
+
+firebase = pyrebase.initialize_app(config)
+
+FIREBASE_AUTH = firebase.auth()
