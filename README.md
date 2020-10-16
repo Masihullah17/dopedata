@@ -30,4 +30,4 @@ python manage.py runserver
 * **media** - Contains all images, videos and audios we collect as part of data collection
 
 ## Resources
-* [**Firebase API**](http://www.lib4dev.in/info/thisbejim/Pyrebase/36919582)
+* [**Firebase Authentication API**](http://www.lib4dev.in/info/thisbejim/Pyrebase/36919582)

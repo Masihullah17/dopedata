@@ -150,7 +150,7 @@ MEDIA_URL = '/media/'
 
 
 import pyrebase
-config = {
+firebase_config = {
 	'apiKey': "AIzaSyDLqFMmhIlGDCDWW6sOCTsm4nHQRYn9IWc",
 	'authDomain': "dopedata-2020.firebaseapp.com",
 	'databaseURL': "https://dopedata-2020.firebaseio.com",
@@ -161,6 +161,6 @@ config = {
   	'measurementId': "G-W4B8BWFKDQ"
 }
 
-firebase = pyrebase.initialize_app(config)
+firebase = pyrebase.initialize_app(firebase_config)
 
 FIREBASE_AUTH = firebase.auth()
