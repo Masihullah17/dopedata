@@ -6,6 +6,7 @@
 * Shaik Masihullah | S20180010159
 * Shikhar Arya | S20180010162
 * Rishimanudeep | S20180010062
+* Kavya Nemmoju | S20180010078
 ## To run the django application
 ```
 Activate env :
