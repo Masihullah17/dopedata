@@ -4,6 +4,7 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+import requests
 
 def signup(request):
 	if request.method == 'POST':
@@ -41,6 +42,7 @@ def auth(request):
 			return render(request,"auth.html",{"msg":message})
 
 		request.session['session_id'] = user['idToken']
+		request.session['refresh_token'] = user['refreshToken']
 
 		return redirect('index')
 	
@@ -55,7 +57,13 @@ def logout(request):
 
 def index(request):
 	if request.session.has_key('session_id'):
-		username = settings.FIREBASE_AUTH.get_account_info(request.session['session_id'])['users'][0]['email']
+		try:
+			username = settings.FIREBASE_AUTH.get_account_info(request.session['session_id'])['users'][0]['email']
+		except requests.exceptions.HTTPError:
+			user = settings.FIREBASE_AUTH.refresh(request.session['refreshToken'])
+			request.session['session_id'] = user['idToken']
+			request.session['refresh_token'] = user['refreshToken']
+		
 		user = User.objects.get(username = username)
 		name = user.first_name
 		token = Token.objects.get(user=user)
