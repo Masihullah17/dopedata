@@ -5,7 +5,7 @@
 ## Team Members
 * Shaik Masihullah | S20180010159
 * Shikhar Arya | S20180010162
-
+* Rishimanudeep | S20180010062
 ## To run the django application
 ```
 Activate env :
