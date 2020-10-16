@@ -26,3 +26,6 @@ python manage.py runserver
 * **static** - Contains all the static files (css, js, images, etc) for webapp
 * **templatetags** - Contains filters to be used in html pages to render better
 * **media** - Contains all images, videos and audios we collect as part of data collection
+
+## Resources
+* [**Firebase API**](http://www.lib4dev.in/info/thisbejim/Pyrebase/36919582)
