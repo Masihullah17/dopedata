@@ -10,11 +10,18 @@
 
 ## To run the django application
 ```
+Create env :
+	python -m venv env
+	pip install -r requirements.txt
+
 Activate env :
 	For Windows :
 		.\env\Scripts\activate
 	For Linux :
 		./env/Scripts/activate
+
+python manage.py makemigrations
+python manage.py migrate
 
 python manage.py runserver
 ```
