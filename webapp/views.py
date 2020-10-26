@@ -1,10 +1,16 @@
+# Django imports
 from django.shortcuts import render, redirect
-
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.utils import timezone
+
+# Python imports
 import requests
+
+# Model Imports
+from data.models import UserProfile
 
 def signup(request):
 	if request.method == 'POST':
@@ -18,6 +24,9 @@ def signup(request):
 				user = settings.FIREBASE_AUTH.create_user_with_email_and_password(email, password)
 				user_entry = User.objects.create(first_name=name, username=email)
 				user_entry.save()
+
+				profile = UserProfile.objects.create(name=name, email=email, joined=timezone.now())
+				profile.save()
 				
 				access_token = Token.objects.create(user=user_entry)
 
