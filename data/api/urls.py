@@ -7,4 +7,6 @@ urlpatterns = [
 	path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
 	url(r'users/(?P<username>[a-zA-Z0-9@._-]+?)/', views.userProfile, name='user_profile_api'),
 	url(r'search/(?P<datasetName>[a-zA-Z0-9 _-]+?)/', views.datasetSearch, name='dataset_search_api'),
+	url(r'request/$', views.requestDataset, name='request_dataset_post'),
+	url(r'request/(?P<requestId>[a-zA-Z0-9 _-]+?)/$', views.requestDataset, name='request_dataset'),
 ]
