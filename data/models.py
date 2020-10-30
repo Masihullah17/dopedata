@@ -20,7 +20,7 @@ class UserProfile(models.Model):
 class Datasets(models.Model):
 	created_by = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True)
 	dataset_name = models.CharField(max_length=500)
-	uid = models.CharField(max_length=30)
+	uid = models.CharField(max_length=50)
 	description = models.TextField()
 	usecase = models.TextField()
 	required_size = models.IntegerField()
@@ -28,7 +28,11 @@ class Datasets(models.Model):
 	data = models.TextField(default=json.dumps([]))
 	url = models.URLField(default=None, null=True, blank=True)
 	is_approved = models.BooleanField(default=False)
+	is_deleted = models.BooleanField(default=False)
+	delete_uid = models.CharField(max_length=50, default='')
+	stop_accepting_contributions = models.BooleanField(default=False)
 	num_filled = models.IntegerField(default=0)
 
 	def __str__(self):
-		return self.dataset_name + "_" + self.uid
+		status = "DELETED_" if self.is_deleted else "NOT-ACCEPTING_" if self.stop_accepting_contributions else ""
+		return status + self.dataset_name + "_" + self.uid
