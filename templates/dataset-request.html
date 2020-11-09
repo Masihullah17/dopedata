@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Data Request Page</title>
+    </head>
+
+    <body>
+        <form method="POST">
+            {%csrf_token%}
+            <label for="dataset-name">Dataset Name : </label>
+            <input type="text" id="dataset-name" name="dataset-name">
+
+            <label for="description">Description : </label>
+            <input type="text" id="description" name="description">
+            
+            <label for="usecase">Usecase : </label>
+            <input type="text" id="usecase" name="usecase">
+            
+            <label for="required-size">Required Size : </label>
+            <input type="number" id="required-size" name="required-size">
+            
+            <div class='field'>
+                <label for="question-0">Question : </label>
+                <input type="text" id="question-0" name="question-0">
+
+                <label for="datatype-0">Data Type : </label>
+                <select name="datatype-0" id="datatype-0" onchange="datatypeSelection(0)">
+                    <option value="image">Image</option>
+                    <option value="audio">Audio</option>
+                    <option value="video">Video</option>
+                    <option value="shortanswer">Short Answer</option>
+                    <option value="paragraph">Paragraph</option>
+                    <option value="multichoice">Multi Choice</option>
+                    <option value="multioption">Multi Options Correct</option>
+                </select>
+                <div id="options-0" style="display: none;">
+                    <label for="0-options">Option : </label>
+                    <input type="text" id="0-options" name="0-options">
+                    <div id="0-extra-options"></div>
+                    <button class="add-option" onclick="AddOption(0); return false;">Add Option</button>
+                </div>
+            </div>
+            
+            <div id="extraQuestions"></div>
+            
+            <button class="add" onclick="AddNewItem(); return false;">Add Question</button>
+
+
+            <script>
+                var questionId = 1;
+                var optionId = 1;
+                function AddNewItem() {
+                    var html = `<div class="field">
+                                    <label for="question-'+ id +'">Question : </label>
+                                    <input type="text" id="question-` + questionId + `" name="question-` + questionId + `">
+                                    
+                                    <label for="datatype-` + questionId + `">Data Type : </label>
+                                    <select name="datatype-` + questionId + `" id="datatype-` + questionId + `"  onchange="datatypeSelection(` + questionId + `)"> 
+                                        <option value="image">Image</option>
+                                        <option value="audio">Audio</option>
+                                        <option value="video">Video</option>
+                                        <option value="shortanswer">Short Answer</option>
+                                        <option value="paragraph">Paragraph</option>
+                                        <option value="multichoice">Multi Choice</option>
+                                        <option value="multioption">Multi Options Correct</option>
+                                    </select>
+                                    <span>
+                                        <button class="del" href="#" onClick="deleteItem(`+ questionId +`); return false">Delete</button>
+                                    </span>
+                                    <div id="options-` + questionId + `" style="display: none;">
+                                        <label for="` + questionId + `-options">Option : </label>
+                                        <input type="text" id="` + questionId + `-options" name="` + questionId + `-options">
+                                        <div id="` + questionId + `-extra-options"></div>
+                                        <button class="add-option" onclick="AddOption(` + questionId + `); return false;">Add Option</button>
+                                    </div>
+                                </div>`;
+                    var newDiv;
+                    newDiv = document.createElement("DIV");
+                    newDiv.innerHTML=html;
+                    newDiv.id ="field"+questionId;
+                    document.getElementById('extraQuestions').insertBefore(newDiv, null);
+                    questionId++;
+                }
+
+                function deleteItem(ID) {
+                    document.getElementById("field"+ID).innerHTML = '';
+                    document.getElementById("field"+ID).style.display = 'none';
+                }
+
+                function datatypeSelection(id) {
+                    var datatypeSelected = document.getElementById("datatype-" + id);
+                    if (datatypeSelected.value == "multichoice" || datatypeSelected.value == "multioption"){
+                        document.getElementById("options-" + id).style.display = 'block';
+                    } else {
+                        document.getElementById("options-" + id).style.display = 'none';
+                    }
+                }
+
+                function AddOption(id) {
+                    var html = `<label for="` + id + `-options">Option : </label>
+                                <input type="text" id="` + id + `-options" name="` + id + `-options">
+                                <span>
+                                    <button class="del" href="#" onClick="deleteOption(`+ optionId +`, ` + id + `); return false">Delete</button>
+                                </span>
+                                `;
+                    var newDiv;
+                    newDiv = document.createElement("DIV");
+                    newDiv.innerHTML=html;
+                    newDiv.id =id + "-option-"+optionId;
+                    document.getElementById(id + '-extra-options').insertBefore(newDiv, null);
+                    optionId++;
+                }
+
+                function deleteOption(optionId, id) { 
+                    document.getElementById(id+"-option-"+optionId).innerHTML = '';
+                    document.getElementById(id+"-option-"+optionId).style.display = 'none';
+                }
+            </script>
+                
+
+            <input type="Submit" value="Submit">
+        </form>
+    </body>
+</html>
