@@ -5,12 +5,15 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.utils import timezone
+from django.http import HttpResponse
 
 # Python imports
 import requests
+import uuid
+import json
 
 # Model Imports
-from data.models import UserProfile
+from data.models import UserProfile, Datasets
 
 def signup(request):
 	if request.method == 'POST':
@@ -51,7 +54,7 @@ def auth(request):
 			return render(request,"auth.html",{"msg":message})
 
 		request.session['session_id'] = user['idToken']
-		request.session['refresh_token'] = user['refreshToken']
+		request.session['refreshToken'] = user['refreshToken']
 
 		return redirect('index')
 	
@@ -71,11 +74,49 @@ def index(request):
 		except requests.exceptions.HTTPError:
 			user = settings.FIREBASE_AUTH.refresh(request.session['refreshToken'])
 			request.session['session_id'] = user['idToken']
-			request.session['refresh_token'] = user['refreshToken']
+			request.session['refreshToken'] = user['refreshToken']
 		
 		user = User.objects.get(username = username)
 		name = user.first_name
 		token = Token.objects.get(user=user)
 		return render(request, 'index.html', {"username" : username, "name" : name, "token" : token})
+	else:
+		return redirect("auth")
+
+def datasetRequestPage(request):
+	if request.session.has_key('session_id'):
+		try:
+			username = settings.FIREBASE_AUTH.get_account_info(request.session['session_id'])['users'][0]['email']
+		except requests.exceptions.HTTPError:
+			user = settings.FIREBASE_AUTH.refresh(request.session['refreshToken'])
+			request.session['session_id'] = user['idToken']
+			request.session['refreshToken'] = user['refreshToken']
+		
+		user = User.objects.get(username = username)
+		name = user.first_name
+
+		if request.method == 'POST':
+			postData = request.POST
+			uid = uuid.uuid1()
+			created_by = UserProfile.objects.get(name=name, email=username)
+			
+			print(postData)
+			print(request.POST)
+			questionsKeys = [key for key in postData.keys() if "question-" in key]
+			data = []
+			for question in questionsKeys:
+				qData = {}
+				qData['question'] = postData[question]
+				qData['datatype'] = postData["datatype-" + question[-1]]
+				qData['choices'] = postData.getlist(question[-1] + "-options")
+				data.append(qData)
+			
+			dataset = Datasets.objects.create(dataset_name=postData['dataset-name'], description=postData['description'], usecase=postData['usecase'], required_size=postData["required-size"], created_by=created_by, uid=uid, entry_time=timezone.now(), data=json.dumps(data))
+			dataset.save()
+
+			return HttpResponse(uid)
+		
+		return render(request,"dataset-request.html")
+
 	else:
 		return redirect("auth")
