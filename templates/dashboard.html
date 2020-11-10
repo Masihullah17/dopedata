@@ -1,0 +1,275 @@
+<html lang="en">
+<head>
+	<title>Data Request</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		.row {
+			background-color: white;
+			color: #1c6ea4;
+			display: flex;
+			justify-content: start;
+			align-items: center;
+		}
+
+		.column {
+			float: left;
+			width: 33.33%;
+			padding: 15px;
+		}
+	
+		.row:after {
+			content: "";
+			display: table;
+			clear: both;
+		}
+
+		.col-25 {
+			float: left;
+			width: 25%;
+			margin-top: 6px;
+		}
+
+		.col-10 {
+			float: left;
+			width: 10%;
+			margin-top: 6px;
+		}
+
+		.col-15 {
+			float: left;
+			width: 15%;
+			margin-top: 6px;
+		}
+
+		.col-75 {
+			float: left;
+			width: 75%;
+			margin-top: 6px;
+		}
+
+		.container {
+			border-radius: 5px;
+			background-color: white;
+			padding: 20px;
+			border: solid 2px #1c6ea4;
+			margin: 10px;
+		}
+
+		.wrapper {
+            font-family:ProximaNovabold;
+            width:950px;
+            display: grid;
+            grid-template-columns: 200px 200px;
+            grid-gap: 10px;
+            grid-auto-rows: minmax(150 px, auto);
+        }
+        
+        .one {
+            margin-top:25px;
+            margin-left:30px;
+            grid-row:1/5;
+            grid-column:1/4;
+        }
+
+        .two {
+            margin-top:92px;
+            margin-left:50px;
+            grid-row:1/5;
+            grid-column:5/8;
+        }
+
+        .three {
+            margin-left:200px;
+            grid-row:6/10;
+            grid-column:1/3;
+        }
+
+        .four {
+            margin-left:200.5px;
+            grid-row:6/10;
+            grid-column:3/8;
+        }
+
+		.notification {
+            background: #ffffff;
+            /* border: 3px solid #c0c0c0; */
+            /* border-style: outset; */
+            width:380px;
+            height:303px;
+            margin-top:14px;
+            padding:20px;
+            box-shadow: 6px 6px 6px #1c6ea4;
+            border-radius:5px;    
+        }
+
+        .data {
+            background-color: #ffffff;
+            /* border: 3px solid #c0c0c0; */
+            /* border-style: outset; */
+            box-shadow: 6px 6px 6px #1c6ea4;
+            width:380px;
+            height:305px;
+            padding:20px; 
+            border-radius: 5px;   
+        }
+
+		.menu {
+            width:314px;
+            height:40px;
+            margin:20px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #e6e6f0;
+            color:#1c6ea4;
+        }
+        
+        .menu button {
+            background-color: #f1f1f1;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
+            color: #1c6ea4;
+        }
+        
+        .menu button:hover {
+            background-color: #ddd;
+        }
+
+        .menu button.active {
+            background-color: #1c6ea4;
+            color:#e6e6f0;
+        }
+
+        .menucontent {
+            background-color: #ffffff;
+            padding: 20px ;
+            margin-left:20px;
+            width:650px;
+            height: 300px;
+            /* background-image: linear-gradient(rgb(252, 252, 252), rgb(204, 208, 209)); */
+            /* border: 3px solid #007cc7; */
+            /* border-style: outset; */
+            border-radius: 5px; 
+            /* box-shadow: 6px 6px 6px #1c6ea4; */
+			-webkit-box-shadow: 0 0 5px 4px #1c6ea4;
+			-moz-box-shadow: 0 0 5px 4px #1c6ea4;
+			box-shadow: 0 0 5px 4px #1c6ea4;
+            font-family: ProximaNova;
+            color: #05204E;
+        }
+	
+		@media screen and (max-width:600px) {
+			.column {
+				width: 100%;
+			}
+
+			.col-10 .col-15 .col-25, .col-75 {
+					width: 100%;
+					margin-top: 0;
+			}
+
+			input[type=submit] {
+					width: 100%;
+					margin: 10px;
+			}
+		}
+	</style>
+</head>
+
+
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block contents %}
+
+<div class="container">
+    <div class="wrapper">
+        <div class="one">    
+            <div id="rcorners1" class="menu">
+                <button class="tablinks" onclick="openCity(event, 'Trending')" id="defaultOpen">Trending</button>
+                <button class="tablinks" onclick="openCity(event, 'Urgent')">Urgent</button>
+                <button class="tablinks" onclick="openCity(event, 'New')">Newly Added</button>
+            </div>
+            
+            <div id="Trending" class="menucontent">
+                <h3 style = "margin-top:10px">Trending</h3><br>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            </div>
+
+            <div id="Urgent" class="menucontent">
+                <h3 style = "margin-top: 10px">Urgent</h3><br>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> 
+            </div>
+
+            <div id="New" class="menucontent">
+                <h3 style = "margin-top: 10px">Newly Added</h3><br>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+        </div>
+        
+        <div class="two">
+            <div class="notification">
+                <h3 style = "text-align:center">Notifications</h3><br>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+                </p>
+
+            </div>
+        </div>
+
+        <div class="three">
+            <div class="data">
+                <h3 style = "text-align:center">Requested</h3><br>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            </div>
+        </div>
+
+        <div class="four">
+            <div class="data">
+                <h3 style = "text-align:center">Contributed</h3><br>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            </div>
+        </div>
+
+    </div>
+   
+	<script>
+		function openCity(evt, cityName) {
+			var i, menucontent, tablinks;
+			menucontent = document.getElementsByClassName("menucontent");
+			for (i = 0; i < menucontent.length; i++) {
+			menucontent[i].style.display = "none";
+			}
+			tablinks = document.getElementsByClassName("tablinks");
+			for (i = 0; i < tablinks.length; i++) {
+			tablinks[i].className = tablinks[i].className.replace(" active", "");
+			}
+			document.getElementById(cityName).style.display = "block";
+			evt.currentTarget.className += " active";
+		}
+		document.getElementById("defaultOpen").click();
+
+		function myFunction(x) {
+			x.classList.toggle("change");
+		}
+	</script>
+</div>
+
+{% endblock contents %}
