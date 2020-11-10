@@ -127,7 +127,7 @@ def profile(request):
 	context['level'] = userProfile.level
 	context['isPremiumUser'] = userProfile.is_premium_user
 	context['joined'] = userProfile.joined
-	context['numRequets'] = userProfile.num_requests
+	context['numRequests'] = userProfile.num_requests
 	context['numContributions'] = userProfile.num_contributions
 
 	return render(request, 'userprofile.html', context=context)

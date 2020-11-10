@@ -1,10 +1,11 @@
-<html lang="en">
+ <html lang="en">
 <head>
-	<title>Your Profile</title>
+	<title>User Profile</title>
 	<script src="https://d3js.org/d3.v4.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/7fbd32cc4b.js"crossorigin="anonymous"></script>
     <style>
 		* {
 			box-sizing: border-box;
@@ -17,8 +18,12 @@
             font-family: ProximaNovaBold;
         }
 
+        #rcorners1 {
+            border-radius: 10px;
+        }
+
         .menu {
-            width:294px;
+            width:297px;
             height:40px;
             margin:20px;
             overflow: hidden;
@@ -27,7 +32,7 @@
         }
         
         .menu button {
-            background-color: #fff;
+            background-color: #f1f1f1;
             float: left;
             border: none;
             outline: none;
@@ -39,7 +44,7 @@
         }
         
         .menu button:hover {
-            background-color: #a5d7f8;
+            background-color: #ddd;
         }
 
         .menu button.active {
@@ -51,12 +56,14 @@
             background-color: white;
             padding: 20px ;
             margin-left:20px;
-            width:650px;
+            width:1000px;
             height: 400px;
             background-image: #ffffff;
             /* border: 3px solid #c0c0c0; */
             border-radius:10px;
-            box-shadow: 6px 6px 6px #1c6ea4;
+            -webkit-box-shadow: 0 0 5px 4px #1c6ea4;
+			-moz-box-shadow: 0 0 5px 4px #1c6ea4;
+			box-shadow: 0 0 5px 4px #1c6ea4;
             /* border-style: outset; */
         }
 
@@ -68,16 +75,16 @@
         }
 
         #myProgress {
-            width: 300px;
+            width: 250px;
             margin:10px;
-            background-color: #ffffff;
-            border-radius: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
         }
 
         #myBar {
-            width: 100px;
+            width: 20px;
             height: 30px;
-            border-radius: 10px;
+            border-radius: 5px;
             background-color: #1c6ea4;
             text-align: center;
             line-height: 30px;
@@ -257,6 +264,27 @@
 
         #image {
             border-radius: 50%;
+            margin-left:400px;
+        }
+
+        .miniwrap {
+            font-family:ProximaNovabold;
+            width:350px;
+            display: grid;
+            grid-template-columns: 70px 70px;
+            grid-gap: 5px;
+            grid-auto-rows: minmax(100 px, auto);
+        }
+
+        .username {
+            grid-row:1/4;
+            grid-column:1/5;
+        }
+
+        .pic {
+            margin-left:280px;
+            grid-row:1/2;
+            grid-column:4/6;
         }
 	
 		@media screen and (max-width:600px) {
@@ -287,16 +315,27 @@
 <div class="container">
 	<div class="wrapper">
         <div class="one">
-            <img src="{% static 'images/Goku.jfif' %}" id="image" alt="Avatar" style="width:100px">
-            <h3>{{name}}</h3>
-            <h4>Bio</h4>
-			<p>{{bio}}</p>
-			
-			<label for="numRequests"></label>
-			<h4 id="numRequests">{{numRequests}}</h4>
+            <div class="miniwrap">
+                <div class="username">
+                    <h3>{{name}} {% if isPremiumUser %}
+                        ⭐
+                        {% endif %}</h3>
+                    <h4>Date joined: {{joined}}</h4><br>
+                    
 
-			<label for="numContributions"></label>
-			<h4 id="numContributions">{{numContributions}}</h4>
+                    <h4>Bio</h4>
+                    <p>{{bio}}</p><br>
+                    
+                    <h4>Requests made: {{numRequests}}</h4>
+                    <h4 id="numRequests"></h4>
+
+                    <h4>Contributions: {{numContributions}}</h4>
+                    <h4 id="numContributions"></h4>
+                </div>  
+                <div class="pic">
+                    <img src="{% static 'images/Goku.jfif' %}" id="image" alt="Avatar" style="width:100px">
+                </div>  
+            </div>    
         </div>
         
         <div class="two">
@@ -305,14 +344,17 @@
                 <div id="myBar">{{level}}</div>
             </div> 
             
-			<h3>Badges</h3>
-				{% if "gold" in badges %}
-					<div id="gold" class="badges">Gold</div>
-				{% elif "silver" in badges %}
-					<div id="silver" class="badges">Silver</div>
-				{% elif "bronze" in badges %}
-					<div id="bronze" class="badges">Bronze</div>
-				{% endif %}
+            <h3>Badges</h3>
+                <i class="fas fa-medal" style="color: gold;font-size: 1.8em;margin:5px"></i>
+                <i class="fas fa-medal" style="color: silver;font-size: 1.8em;margin:5px"></i>
+                <i class="fas fa-medal" style="color: brown;font-size: 1.8em"></i>
+				<!-- {% if "gold" in badges %} -->
+					
+				<!-- {% elif "silver" in badges %} -->
+					
+				<!-- {% elif "bronze" in badges %} -->
+					
+				<!-- {% endif %} -->
         </div>
             
         <div class="three">    
@@ -341,7 +383,7 @@
             <div class="notification">
                 <h2 style = "text-align:left">Perks and Statistics</h2>
                 <br>
-                <div id="chart_4"></div>
+                <div id="chart_4"></div><br>
                 <div id="chart_2"></div>
             </div>
     	</div>
