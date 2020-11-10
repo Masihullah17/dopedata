@@ -69,11 +69,24 @@ def logout(request):
 		pass
 	return redirect("authentication")
 
+def resetPassword(request):
+	error = ''
+	if request.method == "POST":
+		if "signin" in request.POST:
+			return redirect("authentication")
+		email = request.POST['email']
+		try:
+			settings.FIREBASE_AUTH.send_password_reset_email(email)
+			return render(request, 'resetpassword.html', {"page" : "reset"})
+		except:
+			error = "Error Occured!! Try Again."
+	return render(request, 'resetpassword.html', {"page" : "otp", "error" : error})
+
 def  login_required(func):
 	def checkLogin(request, **kwargs):
 		if request.session.has_key('session_id'):
 			try:
-				username = settings.FIREBASE_AUTH.get_account_info(request.session['session_id'])['users'][0]['email']	
+				username = settings.FIREBASE_AUTH.get_account_info(request.session['session_id'])['users'][0]['email']
 			except requests.exceptions.HTTPError:
 				user = settings.FIREBASE_AUTH.refresh(request.session['refreshToken'])
 				request.session['session_id'] = user['idToken']

@@ -4,7 +4,7 @@ import json
 class UserProfile(models.Model):
 	name = models.CharField(max_length=500)
 	email = models.EmailField()
-	bio = models.TextField(default='')
+	bio = models.TextField(default='', null=True, blank=True)
 	profile_pic = models.ImageField(null=True, blank=True)
 	joined = models.DateTimeField()
 	num_requests = models.IntegerField(default=0)
