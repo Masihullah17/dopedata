@@ -31,14 +31,17 @@ def userProfile(request, username):
 @permission_classes([IsAuthenticated])
 def datasetSearch(request, datasetName):
 	try:
-		datasetDetails = Datasets.objects.filter(dataset_name__icontains=datasetName)
+		datasetDetails = Datasets.objects.filter(dataset_name__icontains=datasetName, is_deleted=False)
 		serializedData = serializers.serialize('python', datasetDetails)
 		filteredDatasets = []
 		for dataset in serializedData:
 			filteredDatasets.append(dataset['fields'])
 		
+		if filteredDatasets == []:
+			raise Datasets.DoesNotExist
+		
 		return HttpResponse(json.dumps(filteredDatasets, cls=DjangoJSONEncoder), status=status.HTTP_200_OK, content_type='application/json')
-	except UserProfile.DoesNotExist:
+	except Datasets.DoesNotExist:
 		data = {"status": "Not Found", "status-code": 404, "message": "Uh Oh! You fumbled on something !!"}
 		return Response(data, status=status.HTTP_404_NOT_FOUND)
 
