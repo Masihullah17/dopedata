@@ -328,23 +328,23 @@
 {% block contents %}
 
 <div class="container">
-	<div class="wrapper">
+	<div class="wrapper" style="color: #1c6ea4;">
         <div class="one">
             <div class="miniwrap">
                 <div class="username">
-                    <h3>{{name}} {% if isPremiumUser %}
+                    <h3 style="font-size: xx-large;">{{name}} {% if isPremiumUser %}
                         ⭐
                         {% endif %}</h3>
                     <h4>Date joined: {{joined}}</h4><br>
                     
 
-                    <h4>Bio</h4>
-                    <p>{{bio}}</p><br>
+                    <h2>Bio</h2>
+                    <p style="color: black; padding-left: 30px;">{{bio}}</p><br>
                     
-                    <h4>Requests made: {{numRequests}}</h4>
+                    <h2>Requests made: <span style="font-size: x-large; color: #000;">{{numRequests}}</span></h2>
                     <h4 id="numRequests"></h4>
 
-                    <h4>Contributions: {{numContributions}}</h4>
+                    <h2>Contributions: <span style="font-size: x-large; color: #000;">{{numContributions}}</span></h2>
                     <h4 id="numContributions"></h4>
                 </div>  
                 <div class="pic">

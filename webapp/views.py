@@ -36,7 +36,7 @@ def authentication(request):
 			request.session['session_id'] = user['idToken']
 			request.session['refreshToken'] = user['refreshToken']
 
-			return redirect('index')
+			return redirect('dashboard')
 		elif 'signup' in request.POST:
 			name = request.POST.get('name')
 			email = request.POST.get('email')
@@ -100,6 +100,16 @@ def  login_required(func):
 			return redirect("authentication")
 	return checkLogin
 
+def search(func):
+	def inner(request, **args):
+		if request.method == "POST":
+			if 'Search' in request.POST:
+				search = request.POST['search']
+				datasetsMatched = Datasets.objects.filter(dataset_name__icontains=search)
+				return redirect('/dataset/' + datasetsMatched[0].uid + "/")
+		return func(request, **args)
+	return inner
+
 @login_required
 def index(request):
 	user = User.objects.get(username = request.session['username'])
@@ -112,6 +122,7 @@ def base(request):
 	return render(request, 'base.html')
 
 @login_required
+@search
 def profile(request):
 	user = User.objects.get(username = request.session['username'])
 	name = user.first_name
@@ -139,6 +150,7 @@ def profile(request):
 	return render(request, 'userprofile.html', context=context)
 
 @login_required
+@search
 def specificDataset(request, uid):
 	user = User.objects.get(username = request.session['username'])
 	name = user.first_name
@@ -158,14 +170,9 @@ def specificDataset(request, uid):
 	return render(request, 'dataset.html', {"dataset" : dataset, "badges" : badges, "datatypes" : datatypes, "data" : data})
 	# return render(request, 'dataset.html')
 
-
 @login_required
+@search
 def dashboard(request):
-	if request.method == "POST":
-		if 'Search' in request.POST:
-			search = request.POST['search']
-			datasetsMatched = Datasets.objects.filter(dataset_name__icontains=search)
-			return redirect('/dataset/' + datasetsMatched[0].uid + "/")
 	user = User.objects.get(username = request.session['username'])
 	name = user.first_name
 	token = Token.objects.get(user=user)
@@ -180,6 +187,7 @@ def dashboard(request):
 	return render(request, 'dashboard.html', {"token" : token, "trending" : trending, "urgent" : urgent, "newlyAdded" : newlyAdded, "requests" : requestedDatasets})
 
 @login_required
+@search
 def datasetRequestPage(request):
 	user = User.objects.get(username = request.session['username'])
 	name = user.first_name
