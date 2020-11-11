@@ -4,7 +4,7 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils import timezone
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 
 # Python imports
 import os
@@ -83,7 +83,7 @@ def resetPassword(request):
 	return render(request, 'resetpassword.html', {"page" : "otp", "error" : error})
 
 def  login_required(func):
-	def checkLogin(request, **kwargs):
+	def checkLogin(request, **args):
 		if request.session.has_key('session_id'):
 			try:
 				username = settings.FIREBASE_AUTH.get_account_info(request.session['session_id'])['users'][0]['email']
@@ -94,7 +94,7 @@ def  login_required(func):
 				username = settings.FIREBASE_AUTH.get_account_info(request.session['session_id'])['users'][0]['email']
 			
 			request.session['username'] = username
-			return func(request, **kwargs)
+			return func(request, **args)
 		else:
 			print("Session id not found")
 			return redirect("authentication")
@@ -129,23 +129,55 @@ def profile(request):
 	context['joined'] = userProfile.joined
 	context['numRequests'] = userProfile.num_requests
 	context['numContributions'] = userProfile.num_contributions
+	# userProfile.badges = json.dumps(["silver", "bronze"])
+	# userProfile.save()
+
+	userProfile = UserProfile.objects.get(name=name, email=request.session['username'])
+	requestedDatasets = Datasets.objects.filter(created_by=userProfile).order_by("-entry_time")
+	context['requests'] = requestedDatasets
 
 	return render(request, 'userprofile.html', context=context)
 
 @login_required
-def specificDataset(request, name):
+def specificDataset(request, uid):
 	user = User.objects.get(username = request.session['username'])
 	name = user.first_name
 
-	return render(request, 'dataset.html')
+	try:
+		dataset = Datasets.objects.get(uid=uid)
+	except Datasets.DoesNotExist:
+		raise Http404
+	badges = json.loads(dataset.created_by.badges)
+	data = json.loads(dataset.data)
+
+	datatypes = ""
+	for question in data:
+		datatypes += question['datatype'].capitalize() +", "
+	datatypes = datatypes[:-2]
+
+	return render(request, 'dataset.html', {"dataset" : dataset, "badges" : badges, "datatypes" : datatypes, "data" : data})
+	# return render(request, 'dataset.html')
 
 
 @login_required
 def dashboard(request):
+	if request.method == "POST":
+		if 'Search' in request.POST:
+			search = request.POST['search']
+			datasetsMatched = Datasets.objects.filter(dataset_name__icontains=search)
+			return redirect('/dataset/' + datasetsMatched[0].uid + "/")
 	user = User.objects.get(username = request.session['username'])
 	name = user.first_name
+	token = Token.objects.get(user=user)
 
-	return render(request, 'dashboard.html')
+	trending = Datasets.objects.filter(is_approved=True, is_deleted=False).order_by("-num_filled")
+	urgent = Datasets.objects.filter(is_approved=True, is_deleted=False).order_by("entry_time")
+	newlyAdded = Datasets.objects.filter(is_approved=True, is_deleted=False).order_by("-entry_time")
+	
+	userProfile = UserProfile.objects.get(name=name, email=request.session['username'])
+	requestedDatasets = Datasets.objects.filter(created_by=userProfile).order_by("-entry_time")
+
+	return render(request, 'dashboard.html', {"token" : token, "trending" : trending, "urgent" : urgent, "newlyAdded" : newlyAdded, "requests" : requestedDatasets})
 
 @login_required
 def datasetRequestPage(request):

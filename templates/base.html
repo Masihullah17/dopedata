@@ -150,6 +150,12 @@
 			height: 50;
 			margin-top: 20px;
 		}
+
+		hr.solid {
+			border-top: 3px solid #1c6ea4;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
 	</style>
 </head>
 <body>
@@ -159,15 +165,17 @@
 				<h1 style="color: white;">DopeData</h1>
 			</div>
 		</div>
-	
-		<div class="search_1"> 
-			<input type="text" placeholder="Search.." id="search-text" name="search">
-			<input type="submit" id="search-button" name="Search" value="Search">
-		</div>
+		<form method="post">
+			{% csrf_token %}
+			<div class="search_1">
+				<input type="text" placeholder="Search.." id="search-text" name="search">
+				<input type="submit" id="search-button" name="Search" value="Search">
+			</div>
+		</form>
 	</div>
 
 	<div class="topnav">
-		<a href="/dashboard">Dashboard</a>
+		<a href="/">Dashboard</a>
 		<a href="/profile">User Profile</a>
 		<a href="/request">Data Request</a>
 		<a href="{% url 'logout' %}">Log Out</a>

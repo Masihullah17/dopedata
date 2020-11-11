@@ -7,6 +7,10 @@
 			box-sizing: border-box;
 		}
 
+		body {
+			overflow-x: hidden;
+		}
+
 		.row {
 			background-color: white;
 			color: #1c6ea4;
@@ -103,7 +107,7 @@
             /* border: 3px solid #c0c0c0; */
             /* border-style: outset; */
             width:380px;
-            height:403px;
+            height: 600px;
             margin-top:10px;
             padding:20px;
             -webkit-box-shadow: 0 0 5px 4px #1c6ea4;
@@ -118,14 +122,15 @@
             /* border-style: outset; */
             box-shadow: 6px 6px 6px #1c6ea4;
             width:640px;
-            height:305px;
+			height:305px;
+			overflow: scroll;
             padding:20px; 
             margin-top:30px;
             -webkit-box-shadow: 0 0 5px 4px #1c6ea4;
 			-moz-box-shadow: 0 0 5px 4px #1c6ea4;
 			box-shadow: 0 0 5px 4px #1c6ea4;
             border-radius: 5px;   
-
+			color: #1c6ea4;
         }
 
 		.menu {
@@ -163,8 +168,9 @@
             background-color: #ffffff;
             padding: 20px ;
             margin-left:20px;
-            width:900px;
-            height: 400px;
+            width: 900px;
+			height: 600px;
+			overflow: scroll;
             /* background-image: linear-gradient(rgb(252, 252, 252), rgb(204, 208, 209)); */
             /* border: 3px solid #007cc7; */
             /* border-style: outset; */
@@ -174,9 +180,31 @@
 			-moz-box-shadow: 0 0 5px 4px #1c6ea4;
 			box-shadow: 0 0 5px 4px #1c6ea4;
             font-family: ProximaNova;
-            color: #05204E;
+            color: #1c6ea4;
         }
-	
+
+		#token {
+			color: #1c6ea4;
+			margin-left: 20px;
+		}
+
+		#token span {
+			color: green;
+		}
+
+		#data-display:hover {
+			font-size: larger;
+			-webkit-box-shadow: 0 0 10px #1c6ea4;
+        	box-shadow: 0 0 10px #1c6ea4;
+		}
+
+		#data-display {
+			border: 3px solid #1c6ea4;
+			margin:  20px 0px 20px 30px;
+			padding: 10px;
+			border-radius: 5px; 
+		}
+
 		@media screen and (max-width:600px) {
 			.column {
 				width: 100%;
@@ -204,7 +232,8 @@
 
 <div class="container">
     <div class="wrapper">
-        <div class="one">    
+        <div class="one">
+			<h3 id="token">Your Unique Auth Token : <span>{{token}}</span></h3>
             <div id="rcorners1" class="menu">
                 <button class="tablinks" onclick="openCity(event, 'Trending')" id="defaultOpen">Trending</button>
                 <button class="tablinks" onclick="openCity(event, 'Urgent')">Urgent</button>
@@ -212,50 +241,73 @@
             </div>
             
             <div id="Trending" class="menucontent">
-                <h3 style = "margin-top:10px">Trending</h3><br>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </p>
+				<h3 style = "margin-top:10px; font-size: xx-large;">Trending</h3>
+				{% for data in trending %}
+					<div id="data-display" onclick="redirect('{{data.uid}}')">
+						<h3>{{data.dataset_name}} <span style="font-weight:normal; font-size: small;">(<span style="color: green;font-weight: bold;">{{data.num_filled}}</span>/{{data.required_size}})</span> </h3>
+						<p style="padding-left: 30px;">{{data.description}}</p>
+					</div>
+				{% endfor %}
             </div>
 
             <div id="Urgent" class="menucontent">
-                <h3 style = "margin-top: 10px">Urgent</h3><br>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> 
+                <h3 style = "margin-top: 10px; font-size: xx-large;">Urgent</h3>
+				{% for data in urgent %}
+					<div id="data-display" onclick="redirect('{{data.uid}}')">
+						<h3>{{data.dataset_name}} <span style="font-weight:normal; font-size: small;">(<span style="color: green;font-weight: bold;">{{data.num_filled}}</span>/{{data.required_size}})</span> </h3>
+						<p style="padding-left: 30px;">{{data.description}}</p>
+					</div>
+				{% endfor %}
             </div>
 
             <div id="New" class="menucontent">
-                <h3 style = "margin-top: 10px">Newly Added</h3><br>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <h3 style = "margin-top: 10px; font-size: xx-large;">Newly Added</h3>
+				{% for data in newlyAdded %}
+					<div id="data-display" onclick="redirect('{{data.uid}}')">
+						<h3>{{data.dataset_name}} <span style="font-weight:normal; font-size: small;">(<span style="color: green;font-weight: bold;">{{data.num_filled}}</span>/{{data.required_size}})</span> </h3>
+						<p style="padding-left: 30px;">{{data.description}}</p>
+					</div>
+				{% endfor %}
             </div>
         </div>
         
         <div class="two">
+			<h3 id="token">&nbsp;</h3>
             <div class="notification">
                 <h3 style = "text-align:center">Notifications</h3><br>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit.
-                </p>
-
+				<p>DopeData community hearty welcomes you!! 🎉</p>
+				<br>
+				<p>You can check the datasets which are trending, urgent or newly added in the community in the left panel.</p>
+				<br>
+				<p>Go ahead and do a data contribution or raise a request if you have any data requirement.</p>
             </div>
         </div>
 
         <div class="three">
             <div class="data">
-                <h3 style = "text-align:center">Requested</h3><br>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam.
-                </p>
+                <h3 style = "text-align:center; font-size: x-large;">Requested</h3><br>
+				{% for data in requests %}
+					<div id="data-display" onclick="redirect('{{data.uid}}')">
+						<h3>{{data.dataset_name}} <span style="font-weight:normal; font-size: small;">(<span style="color: green;font-weight: bold;">{{data.num_filled}}</span>/{{data.required_size}})</span> </h3>
+						<p style="padding-left: 30px;">{{data.description}}</p>
+					</div>
+				{% endfor %}
             </div>
         </div>
 
         <div class="four">
             <div class="data">
-                <h3 style = "text-align:center">Contributed</h3><br>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam.
-                </p>
+				<h3 style = "text-align:center; font-size: x-large;">Contributed</h3><br>
+				{% if contributions %}
+					{% for data in contributions %}
+						<div id="data-display" onclick="redirect('{{data.uid}}')">
+							<h3>{{data.dataset_name}} <span style="font-weight:normal; font-size: small;">(<span style="color: green;font-weight: bold;">{{data.num_filled}}</span>/{{data.required_size}})</span> </h3>
+							<p style="padding-left: 30px;">{{data.description}}</p>
+						</div>
+					{% endfor %}
+				{% else %}
+					<h3 style="text-align: center;">Nothing contributed yet!!</h3>
+				{% endif %}
             </div>
         </div>
 
@@ -279,6 +331,10 @@
 
 		function myFunction(x) {
 			x.classList.toggle("change");
+		}
+
+		function redirect(uid) {
+			window.location.href = "/dataset/" + uid + "/";
 		}
 	</script>
 </div>

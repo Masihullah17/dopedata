@@ -2,6 +2,7 @@
 <head>
 	<title>Dataset Information</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://kit.fontawesome.com/7fbd32cc4b.js"crossorigin="anonymous"></script>
     <style>
 		@font-face {
             font-family: ProximaNova;
@@ -99,7 +100,6 @@
             padding: 20px ;
             margin-left:20px;
             width:940px;
-            height: 380px;
             background-color: #ffffff;
             box-shadow: 6px 6px 6px #1c6ea4;
             -webkit-box-shadow: 0 0 5px 4px #1c6ea4;
@@ -248,7 +248,7 @@
             
         <div class="one">  
             
-            <h2 style="margin-top:25px;margin-left:20px;">Data_Set Title</h2>
+            <h2 style="margin-top:25px;margin-left:20px;"><span style="font-weight: 700; color: #1c6ea4;">{{dataset.dataset_name}}</span></h2>
             <div id="rcorners1" class="menu">
                 <button class="tablinks" onclick="openCity(event, 'Details')" id="defaultOpen">Details</button>
                 <button class="tablinks" onclick="openCity(event, 'Collected')">Collected</button>
@@ -260,9 +260,34 @@
             
             <div id="Details" class="menucontent">
                 <h3 style = "margin-top: 10px">Details</h3><br>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </p>
+				<div style="padding-left: 30px;">
+					<span style="font-weight: bold;">Request Id : </span>
+					<p style="padding-left: 30px;"><span style="font-weight: 700; color: #1c6ea4;">{{dataset.uid}}</span></p>
+					<br>
+					<span style="font-weight: bold;">Description : </span>
+					<p style="padding-left: 30px;"><span style="font-weight: 700; color: #1c6ea4;">{{dataset.description}}</span></p>
+					<br>
+					<span style="font-weight: bold;">Use Case : </span>
+					<p style="padding-left: 30px;"><span style="font-weight: 700; color: #1c6ea4;">{{dataset.usecase}}</span></p>
+					<br>
+					<span style="font-weight: bold;">Requested Date : </span>
+					<p style="padding-left: 30px;"><span style="font-weight: 700; color: #1c6ea4;">{{dataset.entry_time}}</span></p>
+					<br>
+					<span style="font-weight: bold;">Data Required : </span>
+					{% for dict in data %}
+						<p style="padding-left: 30px;">Question : <span style="font-weight: 700; color: #1c6ea4;">{{dict.question}}</span></p>
+						<p style="padding-left: 60px;text-transform: capitalize;">Datatype : <span style="font-weight: 700; color: #1c6ea4;">{{dict.datatype}}</span></p>
+						<p style="padding-left: 90px;">
+							{% if dict.datatype == "multichoice" %}
+								<span style="font-weight: 700; color: #1c6ea4;">Options : </span>
+								{% for option in dict.choices %}
+									{{option}}, 
+								{% endfor %}
+							{% endif %}
+						</p>
+						<div style="padding-bottom: 15px;"></div>
+					{% endfor %}
+                </div>
             </div>
             <div id="Collected" class="menucontent">
                 <h3 style = "margin-top: 10px">Collected</h3><br>
@@ -292,23 +317,37 @@
         <div class="two">
             <div class="button">Contribute</div>
             <div class="notification">
-                <h3>Requested by:Username</h3>
+                <h3>Requested by: <span style="font-weight: 700; color: #1c6ea4;">{{dataset.created_by.name}}</span> {% if dataset.created_by.is_premium_user %}
+					⭐
+					{% endif %}
+				</h3>
                 <img src="{% static 'images/Goku.jfif' %}" id="image" alt="Avatar" style="width:52px">
                
-                <h3>Badges: </h3>
-                <h3>Level: </h3><br>
+				<h3>Badges: 
+					{% if "gold" in badges %}
+						<i class="fas fa-medal" style="color: gold;font-size: 1em;margin:5px"></i>	
+					{% endif %}
+					{% if "silver" in badges %}
+						<i class="fas fa-medal" style="color: silver;font-size: 1em;margin:5px"></i>
+					{% endif %}
+					{% if "bronze" in badges %}
+						<i class="fas fa-medal" style="color: brown;font-size: 1em"></i>
+					{% endif %}
+				</h3>
+                <h3>Level: <span style="font-weight: 700; color: #1c6ea4;">{{dataset.created_by.level}}</span></h3><br>
                 <p>
-                   <h3 style = "text-align:left">Details</h3><br>
-                   Data Entries required:   <br>
-                   Points: 
+				   <h3 style = "text-align:left">Datasest details : </h3>
+				   <h3 style = "text-align:left; font-weight: lighter;">&nbsp;&nbsp;Data Entries required: <span style="font-weight: 700; color: #1c6ea4;">{{dataset.required_size}}</span></h3>
+				   <h3 style = "text-align:left; font-weight: lighter;">&nbsp;&nbsp;Points: <span style="font-weight: 700; color: #1c6ea4;">35</span></h3>
+                   
                 </p>
             </div>
         </div>
 
         <div class="three">
             <div class="datatype">
-                <h3>Datatype</h3>
-                <p></p>
+                <h3 style="text-align: center;">Datatypes present in the request</h3>
+                <h4 style="text-align: center;padding-top: 15px;"><span style="font-weight: 700; color: #1c6ea4;">{{datatypes}}</span></h4>
             </div>
         </div>
     </div>

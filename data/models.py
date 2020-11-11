@@ -29,7 +29,7 @@ class Datasets(models.Model):
 	url = models.URLField(default=None, null=True, blank=True)
 	is_approved = models.BooleanField(default=False)
 	is_deleted = models.BooleanField(default=False)
-	delete_uid = models.CharField(max_length=50, default='')
+	delete_uid = models.CharField(max_length=50, default='', blank=True, null=True)
 	stop_accepting_contributions = models.BooleanField(default=False)
 	num_filled = models.IntegerField(default=0)
 
