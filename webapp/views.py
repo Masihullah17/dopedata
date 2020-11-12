@@ -88,10 +88,13 @@ def  login_required(func):
 			try:
 				username = settings.FIREBASE_AUTH.get_account_info(request.session['session_id'])['users'][0]['email']
 			except requests.exceptions.HTTPError:
-				user = settings.FIREBASE_AUTH.refresh(request.session['refreshToken'])
-				request.session['session_id'] = user['idToken']
-				request.session['refreshToken'] = user['refreshToken']
-				username = settings.FIREBASE_AUTH.get_account_info(request.session['session_id'])['users'][0]['email']
+				try:
+					user = settings.FIREBASE_AUTH.refresh(request.session['refreshToken'])
+					request.session['session_id'] = user['idToken']
+					request.session['refreshToken'] = user['refreshToken']
+					username = settings.FIREBASE_AUTH.get_account_info(request.session['session_id'])['users'][0]['email']
+				except requests.exceptions.HTTPError:
+					return redirect("authentication")
 			
 			request.session['username'] = username
 			return func(request, **args)
