@@ -212,7 +212,7 @@ def datasetRequestPage(request):
 		dataset = Datasets.objects.create(dataset_name=postData['dataset-name'], description=postData['description'], usecase=postData['usecase'], required_size=postData["required-size"], created_by=created_by, uid=uid, entry_time=timezone.now(), data=json.dumps(data))
 		dataset.save()
 
-		return HttpResponse(uid)
+		return redirect("profile")
 	
 	return render(request,"request.html")
 

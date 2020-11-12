@@ -286,13 +286,17 @@
 
         <div class="three">
             <div class="data">
-                <h3 style = "text-align:center; font-size: x-large;">Requested</h3><br>
-				{% for data in requests %}
-					<div id="data-display" onclick="redirect('{{data.uid}}')">
-						<h3>{{data.dataset_name}} <span style="font-weight:normal; font-size: small;">(<span style="color: green;font-weight: bold;">{{data.num_filled}}</span>/{{data.required_size}})</span> </h3>
-						<p style="padding-left: 30px;">{{data.description}}</p>
-					</div>
-				{% endfor %}
+				<h3 style = "text-align:center; font-size: x-large;">Requested</h3><br>
+				{% if requests %}
+					{% for data in requests %}
+						<div id="data-display" onclick="redirect('{{data.uid}}')">
+							<h3>{{data.dataset_name}} <span style="font-weight:normal; font-size: small;">(<span style="color: green;font-weight: bold;">{{data.num_filled}}</span>/{{data.required_size}})</span> </h3>
+							<p style="padding-left: 30px;">{{data.description}}</p>
+						</div>
+					{% endfor %}
+				{% else %}
+					<h3 style="text-align: center;">Nothing requested yet!!</h3>
+				{% endif %}
             </div>
         </div>
 
