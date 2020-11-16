@@ -13,7 +13,6 @@
 ```
 Create env :
 	python -m venv env
-	pip install -r requirements.txt
 
 Activate env :
 	For Windows :
@@ -21,8 +20,14 @@ Activate env :
 	For Linux :
 		./env/Scripts/activate
 
+pip install -r requirements.txt
+
 python manage.py makemigrations
+python manage.py makemigrations data
 python manage.py migrate
+python manage.py createsuperuser
+
+python manage.py loaddata db.json
 
 python manage.py runserver
 ```

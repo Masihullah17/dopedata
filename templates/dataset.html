@@ -1,0 +1,377 @@
+<html lang="en">
+<head>
+	<title>Dataset Information</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://kit.fontawesome.com/7fbd32cc4b.js"crossorigin="anonymous"></script>
+    <style>
+		@font-face {
+            font-family: ProximaNova;
+            src: url("../../static/fonts/ProximaNova-Regular.otf");
+        }
+
+		.row {
+			background-color: #e6e6f0;
+			color: #1c6ea4;
+			display: flex;
+			justify-content: start;
+			align-items: center;
+		}
+
+		.column {
+			float: left;
+			width: 33.33%;
+			padding: 15px;
+		}
+	
+		.row:after {
+			content: "";
+			display: table;
+			clear: both;
+		}
+
+		.col-25 {
+			float: left;
+			width: 25%;
+			margin-top: 6px;
+		}
+
+		.col-10 {
+			float: left;
+			width: 10%;
+			margin-top: 6px;
+		}
+
+		.col-15 {
+			float: left;
+			width: 15%;
+			margin-top: 6px;
+		}
+
+		.col-75 {
+			float: left;
+			width: 75%;
+			margin-top: 6px;
+		}
+
+		.container {
+			border-radius: 5px;
+			background-color: white;
+			padding: 20px;
+			border: solid 2px #1c6ea4;
+			margin: 10px;
+		}
+        #rcorners1 {
+            border-radius: 10px;
+        }
+
+		.menu {
+            width:484.5px;
+            height:40px;
+            margin:20px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            color: #1c6ea4;
+        }
+        
+        .menu button {
+            background-color: #f1f1f1;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
+            color: #1c6ea4;
+        }
+        
+        .menu button:hover {
+            background-color: #ddd;
+        }
+
+        .menu button.active {
+            background-color: #1c6ea4;
+            color:#e6e6f0;
+        }
+
+        .menucontent {
+            background-color: white;
+            padding: 20px ;
+            margin-left:20px;
+            width:940px;
+            background-color: #ffffff;
+            box-shadow: 6px 6px 6px #1c6ea4;
+            -webkit-box-shadow: 0 0 5px 4px #1c6ea4;
+			-moz-box-shadow: 0 0 5px 4px #1c6ea4;
+			box-shadow: 0 0 5px 4px #1c6ea4;
+            /* border: 3px solid #c0c0c0; */
+            /* border-style: outset; */
+            border-radius: 5px;
+        }
+        .button {
+            /* background-color: #bbbbbb; */
+            border: none;
+            background-color: #1c6ea4;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            width:95px;
+            margin-bottom:10px;
+            margin-top: 5px;
+            margin-left:125px;
+            cursor: pointer;
+            border-radius: 8px;
+            color:#e6e6f0;
+        }
+
+        .button:hover {
+            background-color: rgb(155, 156, 156);
+        }
+
+		.notification {
+            background-color:#ffffff;
+            /* border: 3px solid #c0c0c0; */
+            /* border-style: outset; */
+            /* box-shadow: 6px 6px 6px #1c6ea4; */
+            -webkit-box-shadow: 0 0 5px 4px #1c6ea4;
+			-moz-box-shadow: 0 0 5px 4px #1c6ea4;
+			box-shadow: 0 0 5px 4px #1c6ea4;
+            width:350px;
+            height:250px;
+            padding:15px;
+            border-radius:10px;    
+        }
+
+        .datatype {
+            background-color: #ffffff;
+            box-shadow: 6px 6px 6px #1c6ea4;
+            /* border: 3px solid #c0c0c0; */
+            /* border-style: outset; */
+            -webkit-box-shadow: 0 0 5px 4px #1c6ea4;
+			-moz-box-shadow: 0 0 5px 4px #1c6ea4;
+			box-shadow: 0 0 5px 4px #1c6ea4;
+            width:350px;
+            height:105px;
+            padding:15px; 
+            border-radius: 5px;   
+        }
+
+        .wrapper {
+            font-family:ProximaNovabold;
+            width:950px;
+            display: grid;
+            grid-template-columns: 200px 200px;
+            grid-gap: 10px;
+            grid-auto-rows: minmax(150 px, auto);
+        }
+        
+        .one {
+            margin-left:30px;
+            grid-row:1/5;
+            grid-column:1/4;
+        }
+
+        .two {
+            margin-top:80px;
+            margin-left:50px;
+            grid-row:1/3;
+            grid-column:5/7;
+        }
+
+        .three {
+            margin-top:10px;
+            margin-left:50px;
+            grid-row:3/5;
+            grid-column:5/7;
+        }
+
+        .body {
+            width:150px;
+            text-align: center;
+            padding:30px;
+        }
+
+        .logo {
+            margin-left:20px;
+        }
+        #image {
+            border-radius: 50%;
+            margin-left:270px;
+            margin-right:20px;
+        }
+	
+		@media screen and (max-width:600px) {
+			.column {
+				width: 100%;
+			}
+
+			.col-10 .col-15 .col-25, .col-75 {
+					width: 100%;
+					margin-top: 0;
+			}
+
+			input[type=submit] {
+					width: 100%;
+					margin: 10px;
+			}
+            .menucontent {
+                width:500px;
+            }
+		}
+
+        @media screen and (max-width:1000px) {
+            .menucontent {
+                width:300px;
+            }
+
+            .notification {
+                margin-right:900px;
+                margin-left:0px;
+                grid-row:1/3;
+                grid-column:3/5;
+            }
+		}
+	</style>
+</head>
+
+
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block contents %}
+
+<div class="container">
+	<div class="wrapper">
+            
+        <div class="one">  
+            
+            <h2 style="margin-top:25px;margin-left:20px;"><span style="font-weight: 700; color: #1c6ea4;">{{dataset.dataset_name}}</span></h2>
+            <div id="rcorners1" class="menu">
+                <button class="tablinks" onclick="openCity(event, 'Details')" id="defaultOpen">Details</button>
+                <button class="tablinks" onclick="openCity(event, 'Collected')">Collected</button>
+                <button class="tablinks" onclick="openCity(event, 'Contributors')">Contributors</button>
+                <button class="tablinks" onclick="openCity(event, 'Issues')">Issues</button>
+                <button class="tablinks" onclick="openCity(event, 'Settings')">Settings</button>
+
+            </div>
+            
+            <div id="Details" class="menucontent">
+                <h3 style = "margin-top: 10px">Details</h3><br>
+				<div style="padding-left: 30px;">
+					<span style="font-weight: bold;">Request Id : </span>
+					<p style="padding-left: 30px;"><span style="font-weight: 700; color: #1c6ea4;">{{dataset.uid}}</span></p>
+					<br>
+					<span style="font-weight: bold;">Description : </span>
+					<p style="padding-left: 30px;"><span style="font-weight: 700; color: #1c6ea4;">{{dataset.description}}</span></p>
+					<br>
+					<span style="font-weight: bold;">Use Case : </span>
+					<p style="padding-left: 30px;"><span style="font-weight: 700; color: #1c6ea4;">{{dataset.usecase}}</span></p>
+					<br>
+					<span style="font-weight: bold;">Requested Date : </span>
+					<p style="padding-left: 30px;"><span style="font-weight: 700; color: #1c6ea4;">{{dataset.entry_time}}</span></p>
+					<br>
+					<span style="font-weight: bold;">Data Required : </span>
+					{% for dict in data %}
+						<p style="padding-left: 30px;">Question : <span style="font-weight: 700; color: #1c6ea4;">{{dict.question}}</span></p>
+						<p style="padding-left: 60px;text-transform: capitalize;">Datatype : <span style="font-weight: 700; color: #1c6ea4;">{{dict.datatype}}</span></p>
+						<p style="padding-left: 90px;">
+							{% if dict.datatype == "multichoice" %}
+								<span style="font-weight: 700; color: #1c6ea4;">Options : </span>
+								{% for option in dict.choices %}
+									{{option}}, 
+								{% endfor %}
+							{% endif %}
+						</p>
+						<div style="padding-bottom: 15px;"></div>
+					{% endfor %}
+                </div>
+            </div>
+            <div id="Collected" class="menucontent">
+                <h3 style = "margin-top: 10px">Collected</h3><br>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> 
+            </div>
+
+            <div id="Contributors" class="menucontent">
+                <h3 style = "margin-top: 10px">Contributors</h3><br>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+            <div id="Issues" class="menucontent">
+                <h3 style = "margin-top: 10px">Issues</h3><br>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> 
+            </div>
+
+            <div id="Settings" class="menucontent">
+                <h3 style = "margin-top: 10px">Settings</h3><br>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+        </div>
+        
+  
+        <div class="two">
+            <div class="button">Contribute</div>
+            <div class="notification">
+                <h3>Requested by: <span style="font-weight: 700; color: #1c6ea4;">{{dataset.created_by.name}}</span> {% if dataset.created_by.is_premium_user %}
+					⭐
+					{% endif %}
+				</h3>
+                <img src="{% static 'images/Goku.jfif' %}" id="image" alt="Avatar" style="width:52px">
+               
+				<h3>Badges: 
+					{% if "gold" in badges %}
+						<i class="fas fa-medal" style="color: gold;font-size: 1em;margin:5px"></i>	
+					{% endif %}
+					{% if "silver" in badges %}
+						<i class="fas fa-medal" style="color: silver;font-size: 1em;margin:5px"></i>
+					{% endif %}
+					{% if "bronze" in badges %}
+						<i class="fas fa-medal" style="color: brown;font-size: 1em"></i>
+					{% endif %}
+				</h3>
+                <h3>Level: <span style="font-weight: 700; color: #1c6ea4;">{{dataset.created_by.level}}</span></h3><br>
+                <p>
+				   <h3 style = "text-align:left">Dataset details : </h3>
+				   <h3 style = "text-align:left; font-weight: lighter;">&nbsp;&nbsp;Data Entries required: <span style="font-weight: 700; color: #1c6ea4;">{{dataset.required_size}}</span></h3>
+				   <h3 style = "text-align:left; font-weight: lighter;">&nbsp;&nbsp;Points: <span style="font-weight: 700; color: #1c6ea4;">35</span></h3>
+                   
+                </p>
+            </div>
+        </div>
+
+        <div class="three">
+            <div class="datatype">
+                <h3 style="text-align: center;">Datatypes present in the request</h3>
+                <h4 style="text-align: center;padding-top: 15px;"><span style="font-weight: 700; color: #1c6ea4;">{{datatypes}}</span></h4>
+            </div>
+        </div>
+    </div>
+   
+	<script>
+		function openCity(evt, cityName) {
+			var i, menucontent, tablinks;
+			menucontent = document.getElementsByClassName("menucontent");
+			for (i = 0; i < menucontent.length; i++) {
+			menucontent[i].style.display = "none";
+			}
+			tablinks = document.getElementsByClassName("tablinks");
+			for (i = 0; i < tablinks.length; i++) {
+			tablinks[i].className = tablinks[i].className.replace(" active", "");
+			}
+			document.getElementById(cityName).style.display = "block";
+			evt.currentTarget.className += " active";
+		}
+		document.getElementById("defaultOpen").click();
+
+		function myFunction(x) {
+			x.classList.toggle("change");
+		}
+	</script>
+</div>
+
+{% endblock contents %}

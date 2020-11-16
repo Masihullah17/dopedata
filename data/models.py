@@ -4,7 +4,7 @@ import json
 class UserProfile(models.Model):
 	name = models.CharField(max_length=500)
 	email = models.EmailField()
-	bio = models.TextField(default='')
+	bio = models.TextField(default='', null=True, blank=True)
 	profile_pic = models.ImageField(null=True, blank=True)
 	joined = models.DateTimeField()
 	num_requests = models.IntegerField(default=0)
@@ -29,7 +29,7 @@ class Datasets(models.Model):
 	url = models.URLField(default=None, null=True, blank=True)
 	is_approved = models.BooleanField(default=False)
 	is_deleted = models.BooleanField(default=False)
-	delete_uid = models.CharField(max_length=50, default='')
+	delete_uid = models.CharField(max_length=50, default='', blank=True, null=True)
 	stop_accepting_contributions = models.BooleanField(default=False)
 	num_filled = models.IntegerField(default=0)
 

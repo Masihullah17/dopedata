@@ -1,0 +1,457 @@
+ <html lang="en">
+<head>
+	<title>User Profile</title>
+	<script src="https://d3js.org/d3.v4.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/7fbd32cc4b.js"crossorigin="anonymous"></script>
+    <style>
+		* {
+			box-sizing: border-box;
+		}
+
+        h3 {
+            font-family: ProximaNovaBold;
+        }
+        h2 {
+            font-family: ProximaNovaBold;
+        }
+
+        #rcorners1 {
+            border-radius: 10px;
+        }
+
+        .menu {
+            width:297px;
+            height:40px;
+            margin:20px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+        
+        .menu button {
+            background-color: #f1f1f1;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
+            color: #1c6ea4;
+        }
+        
+        .menu button:hover {
+            background-color: #ddd;
+        }
+
+        .menu button.active {
+            background-color: #1c6ea4;
+            color:#fff;
+        }
+
+        .menucontent {
+            background-color: white;
+            padding: 20px ;
+            margin-left:20px;
+            width:1000px;
+			height: 400px;
+			overflow: scroll;
+			color: #1c6ea4;
+            background-image: #ffffff;
+            /* border: 3px solid #c0c0c0; */
+            border-radius:10px;
+            -webkit-box-shadow: 0 0 5px 4px #1c6ea4;
+			-moz-box-shadow: 0 0 5px 4px #1c6ea4;
+			box-shadow: 0 0 5px 4px #1c6ea4;
+            /* border-style: outset; */
+        }
+
+        .notification {
+            
+            width:400px;
+            height:305px;
+            padding:20px;    
+        }
+
+        #myProgress {
+            width: 250px;
+            margin:10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+        }
+
+        #myBar {
+            width: 40px;
+            height: 30px;
+            border-radius: 5px;
+            background-color: #1c6ea4;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+        }
+
+        .badges {
+            background-color: #ddd;
+            border: none;
+            color: black;
+            padding: 5px;
+            display: inline-block;
+            text-align: center;
+            margin: 10px 4px;
+            border-radius: 16px;
+        }
+
+        #gold {
+            background-color: gold;
+            width:50px;
+        }
+
+        #silver {
+            background-color: silver;
+            width:50px;
+        }
+
+        #bronze {
+            background-color: brown;
+            width:50px;
+        }
+
+        svg {
+            font-family: ProximaNovaRegular;
+        }
+        .line {
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .axis path {
+            stroke: black;
+        }
+
+        .text {
+            font-size: 10px;
+        }
+
+        .title-text {
+            font-size: 10px;
+        }
+
+        .bar{
+            fill: #1c6ea4;
+        }
+        /* Lighten the axis lines */
+            #x-axis path,#y-axis line, #y-axis path{
+            stroke: #666;
+        }
+        /* Remove the tick marks on the x-axis */
+        #x-axis .tick line{
+            visibility: hidden;
+        }
+
+        text{
+            fill: #666;
+            font-size: 11px;
+        }
+
+        #x-axis text {
+            font-weight: 600;
+        }
+
+		.row {
+			background-color: #e6e6f0;
+			color: #1c6ea4;
+			display: flex;
+			justify-content: start;
+			align-items: center;
+		}
+
+		.column {
+			float: left;
+			width: 33.33%;
+			padding: 15px;
+		}
+	
+		.row:after {
+			content: "";
+			display: table;
+			clear: both;
+		}
+
+		.col-25 {
+			float: left;
+			width: 25%;
+			margin-top: 6px;
+		}
+
+		.col-10 {
+			float: left;
+			width: 10%;
+			margin-top: 6px;
+		}
+
+		.col-15 {
+			float: left;
+			width: 15%;
+			margin-top: 6px;
+		}
+
+		.col-75 {
+			float: left;
+			width: 75%;
+			margin-top: 6px;
+		}
+
+		.container {
+			border-radius: 5px;
+			background-color: white;
+			padding: 20px;
+			border: solid 2px #1c6ea4;
+			margin: 10px;
+		}
+
+		.wrapper {
+            font-family:ProximaNovabold;
+            width:950px;
+            display: grid;
+            grid-template-columns: 200px 200px;
+            grid-gap: 10px;
+            grid-auto-rows: minmax(150 px, auto);
+        }
+        
+        .one {
+            margin-top:40px;
+            margin-left:30px;
+            grid-row:1/3;
+            grid-column:1/4;
+        }
+
+        .two {
+            margin-top:150px;
+            margin-left:50px;
+            grid-row:1/3;
+            grid-column:5/6;
+        }
+
+        .three {
+            grid-row:3/6;
+            grid-column:1/4;
+        }
+
+        .four {
+            margin-top:80px;
+            margin-left:50px;
+            grid-row:3/4;
+            grid-column:5/6;
+        }
+
+        .five {
+            margin-top:120px;
+            margin-left:50px;
+            grid-row:4/5;
+            grid-column:5/6;
+        }
+
+        .body {
+            width:150px;
+            text-align: center;
+            padding:30px;
+        }
+
+        .logo {
+            margin-left:20px;
+        }
+
+        #image {
+            border-radius: 50%;
+            margin-left:400px;
+        }
+
+        .miniwrap {
+            font-family:ProximaNovabold;
+            width:350px;
+            display: grid;
+            grid-template-columns: 70px 70px;
+            grid-gap: 5px;
+            grid-auto-rows: minmax(100 px, auto);
+        }
+
+        .username {
+            grid-row:1/4;
+            grid-column:1/5;
+        }
+
+        .pic {
+            margin-left:280px;
+            grid-row:1/2;
+            grid-column:4/6;
+		}
+		
+		#data-display:hover {
+			font-size: larger;
+			-webkit-box-shadow: 0 0 10px #1c6ea4;
+        	box-shadow: 0 0 10px #1c6ea4;
+		}
+
+		#data-display {
+			border: 3px solid #1c6ea4;
+			margin:  20px 0px 20px 30px;
+			padding: 10px;
+			border-radius: 5px; 
+		}
+	
+		@media screen and (max-width:600px) {
+			.column {
+				width: 100%;
+			}
+
+			.col-10 .col-15 .col-25, .col-75 {
+					width: 100%;
+					margin-top: 0;
+			}
+
+			input[type=submit] {
+					width: 100%;
+					margin: 10px;
+			}
+		}
+	</style>
+</head>
+
+
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block contents %}
+
+<div class="container">
+	<div class="wrapper" style="color: #1c6ea4;">
+        <div class="one">
+            <div class="miniwrap">
+                <div class="username">
+                    <h3 style="font-size: xx-large;">{{name}} {% if isPremiumUser %}
+                        ⭐
+                        {% endif %}</h3>
+                    <h4>Date joined: {{joined}}</h4><br>
+                    
+
+                    <h2>Bio</h2>
+                    <p style="color: black; padding-left: 30px;">{{bio}}</p><br>
+                    
+                    <h2>Requests made: <span style="font-size: x-large; color: #000;">{{numRequests}}</span></h2>
+                    <h4 id="numRequests"></h4>
+
+                    <h2>Contributions: <span style="font-size: x-large; color: #000;">{{numContributions}}</span></h2>
+                    <h4 id="numContributions"></h4>
+                </div>  
+                <div class="pic">
+                    <img src="{% static 'images/Goku.jfif' %}" id="image" alt="Avatar" style="width:100px">
+                </div>  
+            </div>    
+        </div>
+        
+        <div class="two">
+            <h3>Level : {{level}}</h3>
+            <div id="myProgress">
+                <div id="myBar">{{level}}</div>
+            </div> 
+            
+            <h3>Badges
+			{% if "gold" in badges %}
+				<i class="fas fa-medal" style="color: gold;font-size: 1.8em;margin:5px"></i>	
+			{% endif %}
+			{% if "silver" in badges %}
+				<i class="fas fa-medal" style="color: silver;font-size: 1.8em;margin:5px"></i>
+			{% endif %}
+			{% if "bronze" in badges %}
+				<i class="fas fa-medal" style="color: brown;font-size: 1.8em"></i>
+			{% endif %}
+			</h3>
+        </div>
+            
+        <div class="three">    
+            <div id="rcorners1" class="menu">
+                <button class="tablinks" onclick="openCity(event, 'Requested')" id="defaultOpen">Data Requested</button>
+                <button class="tablinks" onclick="openCity(event, 'Collected')">Data Collected</button>
+            </div>
+            
+            <div id="Requested" class="menucontent">
+                <h3 style = "margin-top:10px">Data Requested</h3>
+                <br>
+				{% if requests %}
+					{% for data in requests %}
+						<div id="data-display" onclick="redirect('{{data.uid}}')">
+							<h3>{{data.dataset_name}} <span style="font-weight:normal; font-size: small;">(<span style="color: green;font-weight: bold;">{{data.num_filled}}</span>/{{data.required_size}})</span> </h3>
+							<p style="padding-left: 30px;">{{data.description}}</p>
+						</div>
+					{% endfor %}
+				{% else %}
+					<h3 style="text-align: center;">Nothing requested yet!!</h3>
+				{% endif %}
+            </div>
+
+            <div id="Collected" class="menucontent">
+                <h3 style = "margin-top:10px">Data Collected</h3>
+				<br>
+				{% if contributions %}
+					{% for data in contributions %}
+						<div id="data-display" onclick="redirect('{{data.uid}}')">
+							<h3>{{data.dataset_name}} <span style="font-weight:normal; font-size: small;">(<span style="color: green;font-weight: bold;">{{data.num_filled}}</span>/{{data.required_size}})</span> </h3>
+							<p style="padding-left: 30px;">{{data.description}}</p>
+						</div>
+					{% endfor %}
+				{% else %}
+					<h3 style="text-align: center;">Nothing collected yet!!</h3>
+				{% endif %}
+            </div>
+        </div>
+        
+        <div class="four">
+            <div class="notification">
+                <h2 style = "text-align:left">Perks and Statistics</h2>
+                <br>
+                <div id="chart_4"></div><br>
+                <div id="chart_2"></div>
+            </div>
+    	</div>
+	</div>
+
+	<script src="{% static 'js/points.js' %}"></script>
+	<script src="{% static 'js/contributions_chart.js' %}"></script>
+	<script src="{% static 'js/donutchart_2.js' %}"></script>
+
+
+	<script>
+		var bar = document.getElementById("myBar");
+		bar.style.width = parseInt("{{level}}")*250/100;
+
+		function openCity(evt, cityName) {
+			var i, menucontent, tablinks;
+			menucontent = document.getElementsByClassName("menucontent");
+			for (i = 0; i < menucontent.length; i++) {
+				menucontent[i].style.display = "none";
+			}
+			tablinks = document.getElementsByClassName("tablinks");
+			for (i = 0; i < tablinks.length; i++) {
+				tablinks[i].className = tablinks[i].className.replace(" active", "");
+			}
+			document.getElementById(cityName).style.display = "block";
+			evt.currentTarget.className += " active";
+		}
+		document.getElementById("defaultOpen").click();
+
+		function myFunction(x) {
+			x.classList.toggle("change");
+		}
+
+		function redirect(uid) {
+			window.location.href = "/dataset/" + uid + "/";
+		}
+	</script>
+	
+</div>
+
+{% endblock contents %}

@@ -1,0 +1,195 @@
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>DopeData</title>
+	<style>
+		@font-face {
+            font-family: ProximaNova;
+            src: url("../static/fonts/ProximaNova-Regular.otf");
+        }
+        @font-face {
+            font-family: ProximaNovaBold;
+            src: url("../static/fonts/ProximaNova-Bold.ttf");
+		}
+		@font-face {
+            font-family: ProximaNovaBlack;
+            src: url("../static/fonts/ProximaNova-Black.ttf");
+		}
+		
+		* {
+			box-sizing: border-box;
+			font-family: ProximaNova;
+			border: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		*:focus {
+			outline: none;
+		}
+
+		input:-webkit-autofill,
+		input:-webkit-autofill:hover, 
+		input:-webkit-autofill:focus,
+		textarea:-webkit-autofill,
+		textarea:-webkit-autofill:hover,
+		textarea:-webkit-autofill:focus,
+		select:-webkit-autofill,
+		select:-webkit-autofill:hover,
+		select:-webkit-autofill:focus {
+			-webkit-text-fill-color: white;
+			box-shadow: 0 0 0px 1000px #1c6ea4 inset;	
+			-webkit-box-shadow: 0 0 0px 1000px #1c6ea4 inset;
+			transition: background-color 5000s ease-in-out 0s;
+		}
+
+		input, select {
+			color: #1c6ea4;
+		}
+
+		select option {
+			color: #1c6ea4;
+		}
+
+		::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+			color: #1c6ea4;
+			opacity: 1; /* Firefox */
+		}
+
+		:-ms-input-placeholder { /* Internet Explorer 10-11 */
+			color: #1c6ea4;
+		}
+
+		::-ms-input-placeholder { /* Microsoft Edge */
+			color: #1c6ea4;
+		}
+
+		body {
+			margin: 0;
+			/* background-image: url("../static/images/bg.jpg"); */
+			background-image: linear-gradient(180deg, rgb(28,110,164) 110px, rgb(230,230,240, 0) 125px);/*, url('../static/images/bg.jpg');*/
+			background-position: center;
+			background-size: contain;
+			background-repeat: no-repeat;
+		}
+
+		.header {
+			background-color: transparent;
+			color: transparent;
+			display: flex;
+			justify-content:space-between;
+			align-items: center;
+			padding: 15px;
+			height: 110px;
+		}
+
+		.topnav {
+			overflow: hidden;
+			background-color: transparent;
+			border-bottom: solid 2px #1c6ea4;
+		}
+
+		.topnav a {
+			float: left;
+			display: block;
+			color: #1c6ea4;
+			font-weight: bold;
+			text-align: center;
+			padding: 14px 16px;
+			text-decoration: none;
+		}
+
+		.topnav a:hover {
+			background-color: #1c6ea4;
+			color: white;
+		}
+
+        .logo_1 {
+            grid-row:1;
+            grid-column:1;
+        }
+
+        .search_1 {
+			display: flex;
+			justify-content: right;
+			height: 40px;
+			padding-right: 50px;
+		}
+		
+		.logo {
+            margin-left:20px;
+        }
+
+		#search-text {
+			border-radius: 20px;
+			margin-right: 20px;
+			width: 500px;
+			float: right;
+			padding-left: 1.5%;
+			background-color: white;
+			color: #1c6ea4;
+			padding-left: 30px;
+		}
+
+		#search-button {
+			border-radius: 20px;
+			padding: 10px 30px;
+			color: #1c6ea4;
+			background-color: white;
+			border: 2px solid white;
+		}
+
+		#search-button:hover {
+			color: #e6e6f0;
+			background-color: #1c6ea4;
+			border: 2px solid white;
+		}
+
+		.footer {
+			width: 100%;
+			background-color: #1c6ea4;
+			height: 50;
+			margin-top: 20px;
+		}
+
+		hr.solid {
+			border-top: 3px solid #1c6ea4;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div class="header">
+		<div class="logo_1">    
+			<div class="logo">
+				<img src="{% static 'images/dopedata_logo_new_inv_512.png' %}" alt="DopeData" height="80px">
+			</div>
+		</div>
+		<form method="post">
+			{% csrf_token %}
+			<div class="search_1">
+				<input type="text" placeholder="Search.." id="search-text" name="search">
+				<input type="submit" id="search-button" name="Search" value="Search">
+			</div>
+		</form>
+	</div>
+
+	<div class="topnav">
+		<a href="/">Dashboard</a>
+		<a href="/profile">User Profile</a>
+		<a href="/request">Data Request</a>
+		<a href="{% url 'logout' %}">Log Out</a>
+	</div>
+	
+	{% block contents%}
+	{% endblock contents%}
+
+	<div class="footer">
+		<h4 style="color: #e6e6f0;">&nbsp;</h4>
+	</div>
+
+</body>
+</html>
