@@ -1,0 +1,206 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/landing-page.css' %}">
+  <title>Landing Page</title>
+</head>
+<body>
+  <!-- Header -->
+  <section id="header">
+    <div class="header container">
+      <div class="nav-bar">
+        <div class="brand">
+		  <!-- <a href="#hero"><h1><span>D</span>ope<span>D</span>ata</h1></a> -->
+		  <img id="logo" src="{% static 'images/dopedata_logo_new_inv_512.png' %}" alt="DopeData">
+        </div>
+        <div class="nav-list">
+          <div class="hamburger"><div class="bar"></div></div>
+          <ul>
+            <li><a href="#hero" data-after="Home">Home</a></li>
+            <li><a href="#services" data-after="Service">Services</a></li>
+            <li><a href="#projects" data-after="Projects">Features</a></li>
+            <li><a href="#about" data-after="Benifits">Benifits</a></li>
+			<li><a href="#contact" data-after="Contact">Contact</a></li>
+			<li><a href="/authentication" data-after="Login">Login</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Header -->
+
+
+  <!-- Hero Section  -->
+  <section id="hero">
+    <div class="hero container">
+      <div>
+        <h1>DopeData, <span></span></h1>
+        <h1>Welcomes You !!<span></span></h1>
+      </div>
+    </div>
+  </section>
+  <!-- End Hero Section  -->
+
+  <!-- Service Section -->
+  <section id="services">
+    <div class="services container">
+      <div class="service-top">
+        <h1 class="section-title" style="font-weight: bold;">Serv<span>i</span>ces</h1>
+	  </div>
+
+	  <div class="section-container">
+		<div class="service-item">
+			<p style="font-size: 21px; font-weight: 400; text-align: center;">An open data community platform providing data at your fingertips. Helps you in collecting data according to your requirements or tasks. </p>
+		  </div>
+		  <div class="service-item">
+			<p style="font-size: 21px; font-weight: 400; text-align: center;">For example, collecting data for Machine Learning, Deep Learning, Feedbacks, Surveys, etc.! You can also use it as a data storage hub, where you can easily manage your datasets.</p>
+		  </div>
+		  <div class="service-item">
+			<p style="font-size: 21px; font-weight: 400; text-align: center;">DopeData is a data collection community, where requesters request for their data requirement which goes live on the app and contributors can contribute to that data collection and earn perks and points!</p>
+		  </div>
+	  </div>
+
+     
+  </section>
+  <!-- End Service Section -->
+
+  <!-- Projects Section -->
+  <section id="projects">
+    <div class="projects container">
+      <div class="projects-header">
+        <h1 class="section-title" style="font-weight: bold;">Fea<span>tures</span></h1>
+      </div>
+      <div class="all-projects">
+        <div class="project-item">
+          <div class="project-info">
+            <h1 style="font-weight: bold;">How it works?</h1>
+              <p>DopeData provides a two-way beneficial service where requesters get their requested data
+              in an effective way and contributors will also get benefited by contributing to the data.
+              </p>
+          </div>
+          <div class="project-img">
+            <img src="{% static 'images/howitworks.png' %}" alt="img">
+          </div>
+        </div>
+        <div class="project-item">
+          <div class="project-info">
+            <h1 style="font-weight: bold;">Have a data requirement?</h1>
+            
+            <p>
+              If you have a data requirement, just put up a request on our app and it will go live on our
+              app after a sanity check of the request.!</p>
+          </div>
+          <div class="project-img">
+            <img src="{% static 'images/requirement.jpg' %}" alt="img">
+          </div>
+        </div>
+        <div class="project-item">
+          <div class="project-info">
+            <h1 style="font-weight: bold;">Any sorts of data?</h1>
+            <p>
+              DopeData provides all sorts of data like audio, images, videos, text, etc. and for any machine
+              learning and deep learning tasks, Company feedback, Surveys, Product Reviews, etc.</p>
+             
+          </div>
+          <div class="project-img">
+            <img src="{% static 'images/availability.jpg' %}" alt="img">
+          </div>
+        </div>
+        
+        <div class="project-item">
+          <div class="project-info">
+            <h1 style="font-weight: bold;">Being cautious?</h1>
+              <p>
+                Be Aware of what data you are providing. DopeData is cautious of data it collects, please do
+                not provide any personal data that you feel as confidential.
+                </p>
+          </div>
+          <div class="project-img">
+            <img src="{% static 'images/caution.png' %}" alt="img">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Projects Section -->
+
+  <!-- About Section -->
+  <section id="about">
+    <div class="about container">
+      <div class="col-left">
+        <div class="about-img">
+          <img src="{% static 'images/img-2.png' %}" alt="img">
+        </div>
+      </div>
+      <div class="col-right">
+        <h1 class="section-title"  style="font-weight: bold;">Beni<span>fits</span></h1>
+        <p style="font-size: 21px;">
+          DopeData rewards you with points for contributing and keeps a track of your level which
+          will help you earn badges for your contribution level. Frequent vouchers will also be given
+          for the best contributors. The more data you provide, the higher your level will be and
+          higher points will be given. You can redeem your points for some awesome premium tools
+          and softwares, only if you have done valid entries.</p>
+        
+      </div>
+    </div>
+  </section>
+  <!-- End About Section -->
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <div class="contact container">
+      <div style="margin-bottom: 15px;"><h1 class="section-title" style="font-weight: bold;">Contact <span>info</span></h1></div>
+      <div class="contact-items">
+        <div class="contact-item">
+          <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/phone.png"/></div>
+          <div class="contact-info">
+            <h1>Phone</h1>
+            <h2>+91 9876543210</h2>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/new-post.png"/></div>
+          <div class="contact-info">
+            <h1>Email</h1>
+            <h2>contact@dopedata.com</h2>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/map-marker.png"/></div>
+          <div class="contact-info">
+            <h1>Address</h1>
+            <h2>Sricity</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Contact Section -->
+
+  <!-- Footer -->
+  <section id="footer">
+    <div class="footer container">
+		<img id="logo" src="{% static 'images/dopedata_logo_new_inv_512.png' %}" alt="DopeData">
+      <h2>An OpenData Community Platform</h2>
+      <div class="social-icon">
+        <div class="social-item">
+          <a href="#"><img src="https://img.icons8.com/bubbles/100/000000/facebook-new.png"/></a>
+        </div>
+        <div class="social-item">
+          <a href="#"><img src="https://img.icons8.com/bubbles/100/000000/instagram-new.png"/></a>
+        </div>
+        <div class="social-item">
+          <a href="#"><img src="https://img.icons8.com/bubbles/100/000000/twitter.png"/></a>
+        </div>
+       
+      </div>
+      <p>Copyright © 2020 . All rights reserved</p>
+    </div>
+  </section>
+  <!-- End Footer -->
+  <script src="{% static 'js/landing-page.js' %}"></script>
+</body>
+</html>

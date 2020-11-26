@@ -67,7 +67,7 @@ def logout(request):
 		del request.session['session_id']
 	except:
 		pass
-	return redirect("authentication")
+	return redirect("landingPage")
 
 def resetPassword(request):
 	error = ''
@@ -113,12 +113,8 @@ def search(func):
 		return func(request, **args)
 	return inner
 
-@login_required
 def index(request):
-	user = User.objects.get(username = request.session['username'])
-	name = user.first_name
-	token = Token.objects.get(user=user)
-	return render(request, 'index.html', {"username" : request.session['username'], "name" : name, "token" : token})
+	return render(request, 'landing_page.html')
 
 @login_required
 def base(request):
