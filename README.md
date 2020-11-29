@@ -43,3 +43,4 @@ python manage.py runserver
 
 ## Resources
 * [**Firebase Authentication API**](http://www.lib4dev.in/info/thisbejim/Pyrebase/36919582)
+* [**Google Drive API**](https://googleworkspace.github.io/PyDrive/docs/build/html/index.html)

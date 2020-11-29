@@ -13,5 +13,7 @@ urlpatterns = [
 	path('logout/', views.logout, name='logout'),
 	path('index/', views.index, name="index"),
 	path('request/', views.datasetRequestPage, name="datasetRequestPage"),
-	path('gdrive/', views.gDriveAPI, name="gdrive"),
+	path('gdrive/', views.googleDriveView, name="gdrive"),
+	path('gdrive-auth/', views.googleDriveAuth, name="gdriveAuth"),
+	path('gdrive-upload/', views.uploadFileToGoogleDrive, name="gdriveUpload"),
 ]

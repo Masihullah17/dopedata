@@ -24,7 +24,11 @@
             <li><a href="#projects" data-after="Projects">Features</a></li>
             <li><a href="#about" data-after="Benifits">Benifits</a></li>
 			<li><a href="#contact" data-after="Contact">Contact</a></li>
-			<li><a href="/authentication" data-after="Login">Login</a></li>
+			{% if request.session.session_id %}
+				<li><a href="/dashboard" data-after="dashboard">Dashboard</a></li>
+			{% else %}
+				<li><a href="/authentication" data-after="Login">Login</a></li>
+		  	{% endif %}
           </ul>
         </div>
       </div>

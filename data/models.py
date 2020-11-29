@@ -60,3 +60,11 @@ class Contributions(models.Model):
 
 	def __str__(self):
 		return self.contribution_uid
+
+class GoogleDriveConnections(models.Model):
+	user = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True)
+	is_connected = models.BooleanField(default=False)
+	folder_id = models.CharField(max_length=1000, default='', blank=True, null=True)
+
+	def __str__(self):
+		return self.user.name + " " + str(self.is_connected)

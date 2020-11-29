@@ -13,12 +13,13 @@ import uuid
 import json
 
 # Model Imports
-from data.models import UserProfile, Datasets
+from data.models import UserProfile, Datasets, GoogleDriveConnections
 
 # Google Drive API Imports
-import google.oauth2.credentials
-import google_auth_oauthlib.flow
-import googleapiclient.discovery
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
+gauth = GoogleAuth()
+gdrive = None
 
 def authentication(request):
 	if request.method == "POST":
@@ -51,6 +52,9 @@ def authentication(request):
 
 					profile = UserProfile.objects.create(name=name, email=email, joined=timezone.now())
 					profile.save()
+
+					drive = GoogleDriveConnections.objects.create(user=profile)
+					drive.save()
 					
 					access_token = Token.objects.create(user=user_entry)
 
@@ -212,8 +216,76 @@ def datasetRequestPage(request):
 	
 	return render(request,"request.html")
 
-def gDriveAPI(request):
-	return render(request, 'gdrive.html')
+@login_required
+def googleDriveView(request):
+	global gdrive
 
-def googleDriveAPI(request):
-	pass
+	user = User.objects.get(username = request.session['username'])
+	name = user.first_name
+	userProfile = UserProfile.objects.get(name=name, email=request.session['username'])
+
+	googleDriveConnected = GoogleDriveConnections.objects.get(user = userProfile)
+
+	files = []
+	if googleDriveConnected.is_connected:
+		if gdrive == None:
+			return redirect(getGDriveAuthUrl())
+		files = gdrive.ListFile({'q': "'" + googleDriveConnected.folder_id + "' in parents and trashed=false"}).GetList()
+
+	return render(request, 'gdrive.html', {"files" : files, "connected" : googleDriveConnected.is_connected})
+
+def getGDriveAuthUrl():
+	global gauth
+	return gauth.GetAuthUrl()
+
+@login_required
+def googleDriveAuth(request):
+	global gauth, gdrive
+	authURL = getGDriveAuthUrl()
+	code = request.GET.get('code', '')
+	if code != '':
+		gauth.Auth(code)
+		gdrive = GoogleDrive(gauth)
+		
+		folderID = getFolderId()
+
+		if folderID == '':
+			folder = gdrive.CreateFile({'title' : "DopeData", 'mimeType' : 'application/vnd.google-apps.folder'})
+			folder.Upload()
+			folderID = folder['id']
+
+		user = User.objects.get(username = request.session['username'])
+		name = user.first_name
+		userProfile = UserProfile.objects.get(name=name, email=request.session['username'])
+		
+		userDrive = GoogleDriveConnections.objects.get(user=userProfile)
+		userDrive.is_connected = True
+		userDrive.folder_id = folderID
+		userDrive.save()
+
+		return redirect("gdrive")
+	return HttpResponse(authURL)
+
+def getFolderId():
+	global gdrive
+	foldersList = gdrive.ListFile({'q': "title='DopeData' and mimeType='application/vnd.google-apps.folder' and trashed=false"}).GetList()
+	folderID = ''
+	for folder in foldersList:
+		if(folder['title'] == "DopeData"):
+			folderID = folder['id']
+	return folderID
+
+def uploadFileToGoogleDrive(request):
+	global gauth, gdrive
+	
+	user = User.objects.get(username = request.session['username'])
+	name = user.first_name
+	userProfile = UserProfile.objects.get(name=name, email=request.session['username'])
+	
+	userDrive = GoogleDriveConnections.objects.get(user=userProfile)
+	folderID = userDrive.folder_id
+
+	file4 = drive.CreateFile({'title':'firstfile.json', 'mimeType':'application/json', 'parents' : [{'id': folderID}]})
+	file4.SetContentString('{"firstname": "Shaik", "lastname": "Masihullah"}')
+	file4.Upload()
+	return HttpResponse("Uploaded")
