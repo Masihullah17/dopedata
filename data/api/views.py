@@ -148,7 +148,7 @@ def contribution(request, contributionId=''):
 
 def postContribution(request):
 	try:
-		created_by = UserProfile.objects.get(name=request.user.first_name, email=request.user.username)
+		created_by = UserProfile.objects.get(name=request.user.first_name, email=request.user.username, points=points)
 		uid = uuid.uuid1()
 		time = timezone.now()
 
@@ -183,11 +183,25 @@ def postContribution(request):
 													)
 		contributionCreated.save()
 
+		dataset = Datasets.objects.get(uid=request.data['request-id'])
+		created_by.points += dataset.points
+		
+		if created_by.points > 20 & created_by.points < 50:
+			created.badeges = ['bronze']
+		elif created_by.points > 50 & created_by.points < 100:
+			created_by.badges = ['bronze', 'silver']
+		elif created_by.points > 100:
+			created_by.badges = ['bronze', 'silver', 'gold']
+		print(created_by.points)
+
+		created_by.save()	
+
 		return Response({"status" : "Successful", "contribution-id" : uid}, status=status.HTTP_200_OK)
 	except Exception as e:
 		print(e)
 		data = {"status": "Not Found", "status-code": 404, "message": "Uh Oh! You fumbled on something !!"}
 		return Response(data, status=status.HTTP_404_NOT_FOUND)
+
 
 def deleteContribution(request, contributionId):
 	try:

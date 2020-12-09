@@ -26,6 +26,7 @@ class Datasets(models.Model):
 	required_size = models.IntegerField()
 	entry_time = models.DateTimeField()
 	data = models.TextField(default=json.dumps([]))
+	points = models.IntegerField(default=10)
 	url = models.URLField(default=None, null=True, blank=True)
 	is_approved = models.BooleanField(default=False)
 	is_deleted = models.BooleanField(default=False)
