@@ -5,6 +5,7 @@
 ## Team Members
 * Shaik Masihullah | S20180010159
 * Shikhar Arya | S20180010162
+* Brinda S | S20180010031
 * Rishimanudeep | S20180010062
 * Kavya Nemmoju | S20180010078
 
