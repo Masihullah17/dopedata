@@ -1,0 +1,63 @@
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>159 SOAD Assignment 1</title>
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			background-color: #e6e6f0;
+		}
+
+		.header {
+			background-color: #002188;
+			padding: 20px;
+			text-align: center;
+			color: #e6e6f0;
+		}
+
+		.topnav {
+			overflow: hidden;
+			background-color: #e6e6f0;
+			border-bottom: solid 2px #002188;
+		}
+
+		.topnav a {
+			float: left;
+			display: block;
+			color: #002188;
+			text-align: center;
+			padding: 14px 16px;
+			text-decoration: none;
+		}
+
+		.topnav a:hover {
+			background-color: #002188;
+			color: #e6e6f0;
+		}
+	</style>
+</head>
+<body>
+	<div class="header">
+		<h1>SOAD Mock Application</h1>
+		<p style="color: #e6e6f0;padding: 0px 0px;margin: 0px 0px;">XYZ Company</p>
+		<br>
+		<p style="color: #e6e6f0;padding: 0px 0px;margin: 0px 0px;">Scenario of a company using our API service on thier page.</p>
+	</div>
+
+	<div class="topnav">
+		<a href="/search">Search</a>
+		<a href="/profile">User Profile</a>
+		<a href="/request">Request</a>
+		<a href="/contribute">Contribute</a>
+	</div>
+	
+	{% block contents%}
+	{% endblock contents%}
+
+</body>
+</html>
