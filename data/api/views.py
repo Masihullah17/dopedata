@@ -237,7 +237,7 @@ def deleteContribution(request, contributionId):
 		return Response(data, status=status.HTTP_404_NOT_FOUND)
 
 
-def export(request):
+def export(request):v
     response = HttpResponse(content_type='csv')
 
     writer = csv.writer(response)
