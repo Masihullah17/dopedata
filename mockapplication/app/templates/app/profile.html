@@ -1,0 +1,233 @@
+<html lang="en">
+<head>
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		.row {
+			background-color: #e6e6f0;
+			color: #002188;
+			margin: 10px;
+		}
+
+		.column {
+			float: left;
+			width: 33.33%;
+			padding: 15px;
+		}
+	
+		.row:after {
+			content: "";
+			display: table;
+			clear: both;
+		}
+
+		.col-25 {
+			float: left;
+			width: 25%;
+			margin-top: 6px;
+		}
+
+		.col-75 {
+			float: left;
+			width: 75%;
+			margin-top: 6px;
+		}
+
+		input, select, textarea {
+			width: 100%;
+			padding: 12px;
+			border: 1px solid #002188;
+			border-radius: 4px;
+			resize: vertical;
+		}
+
+		input:hover, select:hover, textarea:hover {
+			border: 2px solid #002188;	
+		}
+
+		label,p {
+			padding: 12px 12px 12px 0;
+			display: inline-block;
+			color: #002188;
+			font-size: large;
+			font-weight: bold;
+		}
+
+		input[type=submit] {
+			background-color: #002188;
+			color: #e6e6f0;
+			padding: 12px 20px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			float: right;
+			width: 150px;
+		}
+
+		input[type=submit]:hover {
+			background-color: #e6e6f0;
+			color: #002188;
+			border: 1px solid #002188;
+		}
+
+		.container {
+			margin-left: 500px;
+			margin-top: 50px;
+			margin-right: 500px;
+			margin-bottom: 20px;
+			padding: 15px;
+			background-color: #f1f9fa;
+			color:  #002188;
+			border-radius: 15px;
+			-webkit-box-shadow: 0 0 5px 4px #1c6ea4;
+			-moz-box-shadow: 0 0 5px 4px #1c6ea4;
+			box-shadow: 0 0 5px 4px #1c6ea4;
+		}
+
+		table {
+			border-collapse:separate;
+			border:solid #002188 4px;
+			border-radius:10px;
+			-moz-border-radius:10px;
+			border-spacing: 0px;
+			margin: 10px;
+		}
+
+		tbody {
+			overflow: auto;
+			border-radius: 20px
+		}
+
+		.tablehead {
+			background-color: #002188;
+			color: #e6e6f0;
+		}
+
+		.tableinside {
+			table-layout:fixed;
+			width: 100% - 20px;
+			margin-left: auto;
+  			margin-right: auto;
+		}
+
+		th, td {
+			text-align: center; 
+			vertical-align: middle;
+			padding: 10px;
+		}
+
+		.wrapper {
+            width:550px;
+            display: grid;
+			text-align: left;
+            grid-template-columns: 150px 150px;
+            grid-gap: 5px;
+            grid-auto-rows: minmax(100 px, auto);
+        }
+        
+		.one {
+			text-align: center;
+			margin-right:60px;
+			grid-row: 1/2;
+			grid-column: 1/3;
+		}
+		.two {
+			grid-row: 1/2;
+			grid-column: 2;
+			margin-left:200px;
+		}
+		.three {
+			text-align:center;
+			grid-row: 2;
+			grid-column: 1 ; 
+		}
+
+		.three_1 {
+			text-align:center;
+			margin-right:20px;
+			grid-row: 2;
+			grid-column: 2 ;
+		}
+
+		.three_2 {
+			text-align:center;
+			margin-right: 75px;
+			grid-row: 2;
+			grid-column: 3;
+		}
+
+		.four {
+			padding-left:25px;
+			grid-row: 3/5;
+			grid-column: 1/4;
+		}
+
+		img {
+			border-radius: 50%;
+		}
+	
+		@media screen and (max-width:600px) {
+			.column {
+				width: 100%;
+			}
+
+			.col-25, .col-75 {
+					width: 100%;
+					margin-top: 0;
+			}
+
+			input[type=submit] {
+					width: 100%;
+					margin: 10px;
+			}
+		}
+	</style>
+</head>
+
+{% extends 'app/index.html' %}
+
+{% block contents%}
+	<div class="row" style="border: solid 2px #002188;">
+
+		<h2 style="display: flex;justify-content: center; text-transform: capitalize;">User Profile</h2>
+
+		<div class="container">
+			<div class="wrapper">
+				<div class="one">	
+					<h2>Username: {{name}}</h2>
+				</div>
+				<div class="two">	
+					<div class=img>
+						<a><img alt="pic" src="http://127.0.0.1:8000/media/{{profile_pic}}" width="70" height="70"></a>
+					</div>
+				</div>
+				<div class="three">
+					<h3>{{level}}</h3>
+					<h3>Level<h3>	
+				</div>
+				<div class="three_1">
+					<h3>{{num_requests}}</h3>
+					<h3>Requests made<h3>	
+				</div>
+				<div class=three_2>
+					<h3>{{num_contributions}}</h3>
+					<h3> Contributions <h3>	
+				</div>
+				<div class="four">
+					<h3 style="text-overflow: clip;">Bio: {{bio}}</h3>
+					<h3>Date joined: {{joined}}</h3>
+					<h3>Email: {{email}}</h3>
+					<h3>Points:  {{points}}</h3>
+					<h3>Badges: {{badges}}</h3>
+				</div>	
+			</div>
+		</div>	
+
+				
+	</div>
+
+{% endblock contents%}
+
+</html>
