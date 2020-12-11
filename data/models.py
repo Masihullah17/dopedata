@@ -60,7 +60,7 @@ class Contributions(models.Model):
 	deletion_id = models.CharField(max_length=50, default="", blank=True, null=True)
 
 	def __str__(self):
-		return self.contribution_uid
+		return str(self.contribution_uid)
 
 class GoogleDriveConnections(models.Model):
 	user = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True)

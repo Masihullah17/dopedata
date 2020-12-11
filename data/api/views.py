@@ -148,13 +148,14 @@ def contribution(request, contributionId=''):
 
 def postContribution(request):
 	try:
-		created_by = UserProfile.objects.get(name=request.user.first_name, email=request.user.username, points=points)
+		created_by = UserProfile.objects.get(name=request.user.first_name, email=request.user.username)
 		uid = uuid.uuid1()
 		time = timezone.now()
 
 		# Check contribution data matches with request data
+		print(request.POST)
 
-		data = json.loads(request.data['data'])
+		data = json.loads(request.data['data'])["data"]
 
 		print(request.FILES)
 		for name, mediaFile in request.FILES.items():
@@ -186,13 +187,12 @@ def postContribution(request):
 		dataset = Datasets.objects.get(uid=request.data['request-id'])
 		created_by.points += dataset.points
 		
-		if created_by.points > 20 & created_by.points < 50:
+		if created_by.points > 20 and created_by.points < 50:
 			created.badeges = ['bronze']
-		elif created_by.points > 50 & created_by.points < 100:
+		elif created_by.points > 50 and created_by.points < 100:
 			created_by.badges = ['bronze', 'silver']
 		elif created_by.points > 100:
 			created_by.badges = ['bronze', 'silver', 'gold']
-		print(created_by.points)
 
 		created_by.save()	
 

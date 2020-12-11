@@ -152,7 +152,6 @@ def profile(request):
 
 	return render(request, 'userprofile.html', context=context)
 
-@login_required
 @search
 def specificDataset(request, uid):
 	user = User.objects.get(username = request.session['username'])
