@@ -202,6 +202,19 @@ def postContribution(request):
 		data = {"status": "Not Found", "status-code": 404, "message": "Uh Oh! You fumbled on something !!"}
 		return Response(data, status=status.HTTP_404_NOT_FOUND)
 
+def putContribution(request,contributionId):
+	try:
+		created_by = UserProfile.objects.get(name=request.user.first_name, email=request.user.username)
+
+		dataset = Contributions.objects.get(uid = contributionId, created_by = created_by)
+		dataset.data = json.dumps(request.data.get('data', json.loads(dataset.data)))
+		dataset.contribution_time = timezone.now()
+		dataset.save()
+		return Response({"status" : "Updated Successfully", "contribution-id" : contributionId}, status=status.HTTP_200_OK)
+	except Exception as e:
+		print(e)
+		data = {"status": "Not Found", "status-code": 404, "message": "Uh Oh! You fumbled on something !!"}
+		return Response(data, status=status.HTTP_404_NOT_FOUND)
 
 def deleteContribution(request, contributionId):
 	try:
