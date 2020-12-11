@@ -3,4 +3,5 @@ from . import views
 
 urlpatterns = [
 	path('api/', include('data.api.urls')),
+	path('csv',views.export),
 ]
