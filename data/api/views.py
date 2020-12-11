@@ -8,18 +8,23 @@ from django.http import HttpResponse
 from django.core.serializers.json import DjangoJSONEncoder
 from django.utils import timezone
 from django.conf import settings
+from django.shortcuts import render
+from django.http import HttpResponse
+
+
 
 # Python Imports
 import json
 import uuid
 import os
+import csv
 
 # Model Imports
 from data.models import UserProfile, Datasets, Contributions, FilesUploads
 
 # Mapper, file type to name
-filetype2Name = {"jpg" : "Image", "png" : "Image", "tif" : "Image", "jpeg" : "Image", 
-					"mp4" : "Video", "mpeg" : "Video", "mkv" : "Video", "3gp" : "Video", 
+filetype2Name = {"jpg" : "Image", "png" : "Image", "tif" : "Image", "jpeg" : "Image",
+					"mp4" : "Video", "mpeg" : "Video", "mkv" : "Video", "3gp" : "Video",
 					"mp3" : "Audio", "aac" : "Audio", "ogg" : "Audio"}
 
 @api_view(http_method_names=['GET',])
@@ -33,7 +38,7 @@ def userProfile(request, username):
 		data = {"status": "Not Found", "status-code": 404, "message": "Uh Oh! You fumbled on something !!"}
 		return Response(data, status=status.HTTP_404_NOT_FOUND)
 
-	
+
 @api_view(http_method_names=['GET',])
 @permission_classes([IsAuthenticated])
 def datasetSearch(request, datasetName):
@@ -43,10 +48,10 @@ def datasetSearch(request, datasetName):
 		filteredDatasets = []
 		for dataset in serializedData:
 			filteredDatasets.append(dataset['fields'])
-		
+
 		if filteredDatasets == []:
 			raise Datasets.DoesNotExist
-		
+
 		return HttpResponse(json.dumps(filteredDatasets, cls=DjangoJSONEncoder), status=status.HTTP_200_OK, content_type='application/json')
 	except Datasets.DoesNotExist:
 		data = {"status": "Not Found", "status-code": 404, "message": "Uh Oh! You fumbled on something !!"}
@@ -93,12 +98,12 @@ def triggerAcceptanceDataset(request, requestId):
 		dataset = Datasets.objects.get(uid = requestId, created_by = created_by, is_deleted=False)
 		dataset.stop_accepting_contributions = not dataset.stop_accepting_contributions
 		dataset.save()
-	
+
 		return Response({"Current Status" : "Accepting Contributions" if not dataset.stop_accepting_contributions else "NOT Accepting Contributions", "status" : "Triggered Successfully", "request-id" : requestId}, status=status.HTTP_200_OK)
 	except Exception as e:
 		print(e)
 		data = {"status": "Not Found", "status-code": 404, "message": "Uh Oh! You fumbled on something !!"}
-		return Response(data, status=status.HTTP_404_NOT_FOUND)	
+		return Response(data, status=status.HTTP_404_NOT_FOUND)
 
 def putRequestDataset(request, requestId):
 	try:
@@ -129,7 +134,7 @@ def deleteRequestDataset(request, requestId):
 		dataset.stop_accepting_contributions = True
 		dataset.delete_uid = uid
 		dataset.save()
-	
+
 		return Response({"status" : "Deleted Successfully", "deletion-reference-id" : uid}, status=status.HTTP_200_OK)
 	except Exception as e:
 		print(e)
@@ -186,7 +191,7 @@ def postContribution(request):
 
 		dataset = Datasets.objects.get(uid=request.data['request-id'])
 		created_by.points += dataset.points
-		
+
 		if created_by.points > 20 and created_by.points < 50:
 			created.badeges = ['bronze']
 		elif created_by.points > 50 and created_by.points < 100:
@@ -194,7 +199,7 @@ def postContribution(request):
 		elif created_by.points > 100:
 			created_by.badges = ['bronze', 'silver', 'gold']
 
-		created_by.save()	
+		created_by.save()
 
 		return Response({"status" : "Successful", "contribution-id" : uid}, status=status.HTTP_200_OK)
 	except Exception as e:
@@ -230,3 +235,17 @@ def deleteContribution(request, contributionId):
 		print(e)
 		data = {"status": "Not Found", "status-code": 404, "message": "Uh Oh! You fumbled on something !!"}
 		return Response(data, status=status.HTTP_404_NOT_FOUND)
+
+
+def export(request):
+    response = HttpResponse(content_type='csv')
+
+    writer = csv.writer(response)
+    writer.writerow(['time', 'id', 'data', 'verification' ])
+
+    for member in Contributions.objects.filter(deleted=False).values_list('contribution_time', 'contribution_uid', 'data', 'verified'):
+        writer.writerow(member)
+
+    response['Content-Disposition'] = 'attachment; filename="contributions.csv"'
+
+    return response
