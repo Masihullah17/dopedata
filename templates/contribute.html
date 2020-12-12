@@ -1,19 +1,13 @@
 <html lang="en">
 <head>
-	<title>Dashboard</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<style>
+	<title>Contribute</title>
+    <style>
 		* {
 			box-sizing: border-box;
-			color: #1c6ea4;
-		}
-
-		body {
-			overflow-x: hidden;
 		}
 
 		.row {
-			background-color: white;
+			background-color: transparent;
 			color: #1c6ea4;
 			display: flex;
 			justify-content: start;
@@ -56,14 +50,54 @@
 			margin-top: 6px;
 		}
 
+		input, select, textarea {
+			width: 100%;
+			padding: 12px;
+			border: 1px solid #1c6ea4;
+			border-radius: 4px;
+			resize: vertical;
+		}
+
+		input:hover, select:hover, textarea:hover {
+			border: 2px solid #1c6ea4;	
+		}
+
+		label,p {
+			padding: 12px 12px 12px 0;
+			display: inline-block;
+			color: #1c6ea4;
+			font-size: large;
+			font-weight: bold;
+		}
+
+		input[type=submit] {
+			background-color: #1c6ea4;
+			color: #e6e6f0;
+			padding: 12px 20px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			float: right;
+			width: 150px;
+		}
+
+		input[type=submit]:hover {
+			background-color: #e6e6f0;
+			color: #1c6ea4;
+			border: 1px solid #1c6ea4;
+		}
+
 		.container {
 			border-radius: 5px;
-			background-color: white;
+			background-color: transparent;
 			padding: 20px;
 			border: solid 2px #1c6ea4;
 			margin: 10px;
 		}
 
+
+
+	
 		@media screen and (max-width:600px) {
 			.column {
 				width: 100%;
@@ -82,7 +116,6 @@
 	</style>
 </head>
 
-
 {% extends 'base.html' %}
 
 {% load static %}
@@ -90,24 +123,16 @@
 {% block contents %}
 
 <div class="container">
+	<form method="POST">
+		{%csrf_token%}
+		<div class="row" style="justify-content: center;">
+			<h1>Contribute</h1>
+		</div>
 
-	{% if connected %}
-		{% if files %}
-			<h2>Files stored on your drive</h2>
-			{% for file in files %}
-				<h4 style="padding-left: 30px;">{{forloop.counter}}. {{file.title}}</h4>
-			{% endfor %}
-		{% else %}
-			<h4>No files created yet.</h4>
-			<button style="margin-left: 25px; margin-top: 25px; padding: 10px; background-color: #1c6ea4; color: white; border-radius: 15px;" onclick='window.location.href="/gdrive-upload/"'>Migrate to Google Drive</button>
-		{% endif %}
-	{% else %}
-		<h4>Google Drive not connected.</h4>
-		<a href="{% url 'gdriveAuth' %}">Click here to connect.</a>
-	{% endif %}
-   
-	<script>
-	</script>
+	</form>
 </div>
+
+
+
 
 {% endblock contents %}

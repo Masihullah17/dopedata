@@ -8,18 +8,21 @@ from django.http import HttpResponse
 from django.core.serializers.json import DjangoJSONEncoder
 from django.utils import timezone
 from django.conf import settings
+from django.shortcuts import render
+from django.http import HttpResponse
 
 # Python Imports
 import json
 import uuid
 import os
+import csv
 
 # Model Imports
 from data.models import UserProfile, Datasets, Contributions, FilesUploads
 
 # Mapper, file type to name
-filetype2Name = {"jpg" : "Image", "png" : "Image", "tif" : "Image", "jpeg" : "Image", 
-					"mp4" : "Video", "mpeg" : "Video", "mkv" : "Video", "3gp" : "Video", 
+filetype2Name = {"jpg" : "Image", "png" : "Image", "tif" : "Image", "jpeg" : "Image",
+					"mp4" : "Video", "mpeg" : "Video", "mkv" : "Video", "3gp" : "Video",
 					"mp3" : "Audio", "aac" : "Audio", "ogg" : "Audio"}
 
 @api_view(http_method_names=['GET',])
@@ -33,7 +36,6 @@ def userProfile(request, username):
 		data = {"status": "Not Found", "status-code": 404, "message": "Uh Oh! You fumbled on something !!"}
 		return Response(data, status=status.HTTP_404_NOT_FOUND)
 
-	
 @api_view(http_method_names=['GET',])
 @permission_classes([IsAuthenticated])
 def datasetSearch(request, datasetName):
@@ -43,10 +45,10 @@ def datasetSearch(request, datasetName):
 		filteredDatasets = []
 		for dataset in serializedData:
 			filteredDatasets.append(dataset['fields'])
-		
+
 		if filteredDatasets == []:
 			raise Datasets.DoesNotExist
-		
+
 		return HttpResponse(json.dumps(filteredDatasets, cls=DjangoJSONEncoder), status=status.HTTP_200_OK, content_type='application/json')
 	except Datasets.DoesNotExist:
 		data = {"status": "Not Found", "status-code": 404, "message": "Uh Oh! You fumbled on something !!"}
@@ -93,12 +95,12 @@ def triggerAcceptanceDataset(request, requestId):
 		dataset = Datasets.objects.get(uid = requestId, created_by = created_by, is_deleted=False)
 		dataset.stop_accepting_contributions = not dataset.stop_accepting_contributions
 		dataset.save()
-	
+
 		return Response({"Current Status" : "Accepting Contributions" if not dataset.stop_accepting_contributions else "NOT Accepting Contributions", "status" : "Triggered Successfully", "request-id" : requestId}, status=status.HTTP_200_OK)
 	except Exception as e:
 		print(e)
 		data = {"status": "Not Found", "status-code": 404, "message": "Uh Oh! You fumbled on something !!"}
-		return Response(data, status=status.HTTP_404_NOT_FOUND)	
+		return Response(data, status=status.HTTP_404_NOT_FOUND)
 
 def putRequestDataset(request, requestId):
 	try:
@@ -129,14 +131,14 @@ def deleteRequestDataset(request, requestId):
 		dataset.stop_accepting_contributions = True
 		dataset.delete_uid = uid
 		dataset.save()
-	
+
 		return Response({"status" : "Deleted Successfully", "deletion-reference-id" : uid}, status=status.HTTP_200_OK)
 	except Exception as e:
 		print(e)
 		data = {"status": "Not Found", "status-code": 404, "message": "Uh Oh! You fumbled on something !!"}
 		return Response(data, status=status.HTTP_404_NOT_FOUND)
 
-@api_view(http_method_names=['POST', 'DELETE',]) #'PUT',
+@api_view(http_method_names=['POST', 'PUT', 'DELETE',])
 @permission_classes([IsAuthenticated])
 def contribution(request, contributionId=''):
 	if request.method == "POST":
@@ -153,11 +155,8 @@ def postContribution(request):
 		time = timezone.now()
 
 		# Check contribution data matches with request data
-		print(request.POST)
+		data = json.loads(request.data['data'])
 
-		data = json.loads(request.data['data'])["data"]
-
-		print(request.FILES)
 		for name, mediaFile in request.FILES.items():
 			fileSaved = FilesUploads.objects.create(uploaded_user=created_by, dataset_uid=request.POST['request-id'], contribution_id=uid, upload_time=time, uploaded_file=mediaFile)
 			initial_path = fileSaved.uploaded_file.path
@@ -185,8 +184,11 @@ def postContribution(request):
 		contributionCreated.save()
 
 		dataset = Datasets.objects.get(uid=request.data['request-id'])
-		created_by.points += dataset.points
+		dataset.num_filled += 1
+		dataset.save()
 		
+		created_by.points += dataset.points
+
 		if created_by.points > 20 and created_by.points < 50:
 			created.badeges = ['bronze']
 		elif created_by.points > 50 and created_by.points < 100:
@@ -194,7 +196,7 @@ def postContribution(request):
 		elif created_by.points > 100:
 			created_by.badges = ['bronze', 'silver', 'gold']
 
-		created_by.save()	
+		created_by.save()
 
 		return Response({"status" : "Successful", "contribution-id" : uid}, status=status.HTTP_200_OK)
 	except Exception as e:
@@ -206,7 +208,7 @@ def putContribution(request,contributionId):
 	try:
 		created_by = UserProfile.objects.get(name=request.user.first_name, email=request.user.username)
 
-		dataset = Contributions.objects.get(uid = contributionId, created_by = created_by)
+		dataset = Contributions.objects.get(contribution_uid= contributionId, contributed_by=created_by)
 		dataset.data = json.dumps(request.data.get('data', json.loads(dataset.data)))
 		dataset.contribution_time = timezone.now()
 		dataset.save()
@@ -230,3 +232,22 @@ def deleteContribution(request, contributionId):
 		print(e)
 		data = {"status": "Not Found", "status-code": 404, "message": "Uh Oh! You fumbled on something !!"}
 		return Response(data, status=status.HTTP_404_NOT_FOUND)
+
+
+def downloadDataset(request, requestId):
+	response = HttpResponse(content_type='csv')
+
+	writer = csv.writer(response)
+	writer.writerow(['contribution_time', 'contribution_id', 'data', 'verified' ])
+
+	for member in Contributions.objects.filter(deleted=False, request_uid=requestId).values_list('contribution_time', 'contribution_uid', 'data', 'verified'):
+		writer.writerow(member)
+
+	try:
+		name = Datasets.objects.get(uid=requestId).dataset_name
+	except Datasets.DoesNotExist:
+		return HttpResponse("No matching data request found with the provided requestid", status=status.HTTP_404_NOT_FOUND)
+
+	response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(name)
+
+	return response

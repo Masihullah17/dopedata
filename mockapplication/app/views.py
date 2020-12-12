@@ -30,7 +30,7 @@ def contribute(request):
 	data = {}
 	if request.method == "POST":
 		try:
-			data = {"data" : request.POST['json'], "request-id" : request.POST['requestid']}
+			data = {"data" : json.dumps(json.loads(request.POST['json'])["data"]), "request-id" : request.POST['requestid']}
 			r = http.post("http://127.0.0.1:8000/data/api/contribute/", headers={"Authorization" : "Token 26a263ec3e908a0c26ac37794d0de57054f582e1"}, data=data, files=request.FILES)
 			data = r.json()
 
@@ -38,7 +38,8 @@ def contribute(request):
 				data['requestid'] = data['request-id']
 			if "contribution-id" in data:
 				data['contributionid'] = data['contribution-id']
-		except:
+		except Exception as e:
+			print(e)
 			data = {"status" : "Error Occured. Please try again."}
 	return render(request, "app/contribute.html", context=data)
 

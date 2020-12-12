@@ -5,15 +5,17 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils import timezone
 from django.http import HttpResponse, Http404
+from django.core import serializers
 
 # Python imports
 import os
 import requests
 import uuid
 import json
+from collections import Counter
 
 # Model Imports
-from data.models import UserProfile, Datasets, GoogleDriveConnections
+from data.models import UserProfile, Datasets, GoogleDriveConnections, Contributions
 
 # Google Drive API Imports
 from pydrive.auth import GoogleAuth
@@ -103,7 +105,6 @@ def  login_required(func):
 			request.session['username'] = username
 			return func(request, **args)
 		else:
-			print("Session id not found")
 			return redirect("authentication")
 	return checkLogin
 
@@ -136,7 +137,7 @@ def profile(request):
 	context = {}
 	context['name'] = name
 	context['bio'] = userProfile.bio
-	context['badges'] = json.loads(userProfile.badges)
+	context['badges'] = json.loads(userProfile.badges.replace("'", "\""))
 	context['points'] = userProfile.points
 	context['level'] = userProfile.level
 	context['isPremiumUser'] = userProfile.is_premium_user
@@ -161,7 +162,11 @@ def specificDataset(request, uid):
 		dataset = Datasets.objects.get(uid=uid)
 	except Datasets.DoesNotExist:
 		raise Http404
-	badges = json.loads(dataset.created_by.badges)
+
+	# dataset.created_by.badges = json.dumps(["bronze", "silver", "gold"])
+	# dataset.save()
+
+	badges = json.loads(dataset.created_by.badges.replace("'", "\""))
 	data = json.loads(dataset.data)
 
 	datatypes = ""
@@ -169,7 +174,14 @@ def specificDataset(request, uid):
 		datatypes += question['datatype'].capitalize() +", "
 	datatypes = datatypes[:-2]
 
-	return render(request, 'dataset.html', {"dataset" : dataset, "badges" : badges, "datatypes" : datatypes, "data" : data})
+	contributions = Contributions.objects.filter(deleted=False, request_uid=uid)
+
+	contributors = []
+	for c in contributions:
+		contributors.append(c.contributed_by.name)
+	contributors = Counter(contributors).most_common()
+
+	return render(request, 'dataset.html', {"dataset" : dataset, "badges" : badges, "datatypes" : datatypes, "data" : data, "contributions" : contributions, "contributors" : contributors})
 	# return render(request, 'dataset.html')
 
 @login_required
@@ -274,6 +286,7 @@ def getFolderId():
 			folderID = folder['id']
 	return folderID
 
+@login_required
 def uploadFileToGoogleDrive(request):
 	global gauth, gdrive
 	
@@ -284,7 +297,12 @@ def uploadFileToGoogleDrive(request):
 	userDrive = GoogleDriveConnections.objects.get(user=userProfile)
 	folderID = userDrive.folder_id
 
-	file4 = drive.CreateFile({'title':'firstfile.json', 'mimeType':'application/json', 'parents' : [{'id': folderID}]})
-	file4.SetContentString('{"firstname": "Shaik", "lastname": "Masihullah"}')
-	file4.Upload()
-	return HttpResponse("Uploaded")
+	datasets = Datasets.objects.filter(created_by=userProfile)
+	for dataset in datasets:
+		contributions = Contributions.objects.filter(request_uid=dataset.uid)
+		serialized = serializers.serialize('json', contributions)
+
+		file4 = gdrive.CreateFile({'title': dataset.dataset_name + '.json', 'mimeType':'application/json', 'parents' : [{'id': folderID}]})
+		file4.SetContentString(str(serialized))
+		file4.Upload()
+	return redirect("/gdrive")
