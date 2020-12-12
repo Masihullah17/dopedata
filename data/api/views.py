@@ -138,7 +138,7 @@ def deleteRequestDataset(request, requestId):
 		data = {"status": "Not Found", "status-code": 404, "message": "Uh Oh! You fumbled on something !!"}
 		return Response(data, status=status.HTTP_404_NOT_FOUND)
 
-@api_view(http_method_names=['POST', 'DELETE',]) #'PUT',
+@api_view(http_method_names=['POST', 'PUT', 'DELETE',])
 @permission_classes([IsAuthenticated])
 def contribution(request, contributionId=''):
 	if request.method == "POST":
@@ -155,11 +155,8 @@ def postContribution(request):
 		time = timezone.now()
 
 		# Check contribution data matches with request data
-		print(request.POST)
-
 		data = json.loads(request.data['data'])
 
-		print(request.FILES)
 		for name, mediaFile in request.FILES.items():
 			fileSaved = FilesUploads.objects.create(uploaded_user=created_by, dataset_uid=request.POST['request-id'], contribution_id=uid, upload_time=time, uploaded_file=mediaFile)
 			initial_path = fileSaved.uploaded_file.path
@@ -211,7 +208,7 @@ def putContribution(request,contributionId):
 	try:
 		created_by = UserProfile.objects.get(name=request.user.first_name, email=request.user.username)
 
-		dataset = Contributions.objects.get(uid = contributionId, created_by = created_by)
+		dataset = Contributions.objects.get(contribution_uid= contributionId, contributed_by=created_by)
 		dataset.data = json.dumps(request.data.get('data', json.loads(dataset.data)))
 		dataset.contribution_time = timezone.now()
 		dataset.save()
@@ -246,7 +243,10 @@ def downloadDataset(request, requestId):
 	for member in Contributions.objects.filter(deleted=False, request_uid=requestId).values_list('contribution_time', 'contribution_uid', 'data', 'verified'):
 		writer.writerow(member)
 
-	name = Datasets.objects.get(uid=requestId).dataset_name
+	try:
+		name = Datasets.objects.get(uid=requestId).dataset_name
+	except Datasets.DoesNotExist:
+		return HttpResponse("No matching data request found with the provided requestid", status=status.HTTP_404_NOT_FOUND)
 
 	response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(name)
 

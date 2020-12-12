@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils import timezone
 from django.http import HttpResponse, Http404
+from django.core import serializers
 
 # Python imports
 import os
@@ -104,7 +105,6 @@ def  login_required(func):
 			request.session['username'] = username
 			return func(request, **args)
 		else:
-			print("Session id not found")
 			return redirect("authentication")
 	return checkLogin
 
@@ -137,7 +137,7 @@ def profile(request):
 	context = {}
 	context['name'] = name
 	context['bio'] = userProfile.bio
-	context['badges'] = json.loads(userProfile.badges)
+	context['badges'] = json.loads(userProfile.badges.replace("'", "\""))
 	context['points'] = userProfile.points
 	context['level'] = userProfile.level
 	context['isPremiumUser'] = userProfile.is_premium_user
@@ -228,24 +228,6 @@ def datasetRequestPage(request):
 	return render(request,"request.html")
 
 @login_required
-def contribute(request, uid):
-	data = request.POST
-	user = User.objects.get(username = request.session['username'])
-	name = user.first_name
-
-	try:
-		dataset = Datasets.objects.get(uid=uid)
-	except Datasets.DoesNotExist:
-		raise Http404
-	if request.method == 'POST':
-		dd
-
-
-		return redirect("profile")
-
-	return render(request, "contribute.html")	
-
-@login_required
 def googleDriveView(request):
 	global gdrive
 
@@ -304,6 +286,7 @@ def getFolderId():
 			folderID = folder['id']
 	return folderID
 
+@login_required
 def uploadFileToGoogleDrive(request):
 	global gauth, gdrive
 	
@@ -314,7 +297,12 @@ def uploadFileToGoogleDrive(request):
 	userDrive = GoogleDriveConnections.objects.get(user=userProfile)
 	folderID = userDrive.folder_id
 
-	file4 = drive.CreateFile({'title':'firstfile.json', 'mimeType':'application/json', 'parents' : [{'id': folderID}]})
-	file4.SetContentString('{"firstname": "Shaik", "lastname": "Masihullah"}')
-	file4.Upload()
-	return HttpResponse("Uploaded")
+	datasets = Datasets.objects.filter(created_by=userProfile)
+	for dataset in datasets:
+		contributions = Contributions.objects.filter(request_uid=dataset.uid)
+		serialized = serializers.serialize('json', contributions)
+
+		file4 = gdrive.CreateFile({'title': dataset.dataset_name + '.json', 'mimeType':'application/json', 'parents' : [{'id': folderID}]})
+		file4.SetContentString(str(serialized))
+		file4.Upload()
+	return redirect("/gdrive")

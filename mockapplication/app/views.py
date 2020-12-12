@@ -37,7 +37,8 @@ def contribute(request):
 				data['requestid'] = data['request-id']
 			if "contribution-id" in data:
 				data['contributionid'] = data['contribution-id']
-		except:
+		except Exception as e:
+			print(e)
 			data = {"status" : "Error Occured. Please try again."}
 	return render(request, "app/contribute.html", context=data)
 
