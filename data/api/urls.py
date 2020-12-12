@@ -11,4 +11,5 @@ urlpatterns = [
 	url(r'request/(?P<requestId>[a-zA-Z0-9 _-]+?)/$', views.requestDataset, name='request_dataset'),
 	url(r'contribute/$', views.contribution, name='contribution_post'),
 	url(r'contribute/(?P<contributionId>[a-zA-Z0-9 _-]+?)/$', views.contribution, name='contribution'),
+	url(r'download/(?P<requestId>[a-zA-Z0-9 _-]+?)/$', views.downloadDataset, name='download'),
 ]

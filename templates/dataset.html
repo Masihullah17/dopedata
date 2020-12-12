@@ -291,14 +291,20 @@
             </div>
             <div id="Collected" class="menucontent">
                 <h3 style = "margin-top: 10px">Collected</h3><br>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> 
+				{% for c in contributions %}
+					<p style="padding-left: 30px;">Data : <span style="font-weight: 700; color: #1c6ea4;">{{c.data}}</span></p>
+					<div style="padding-bottom: 15px;"></div>
+				{% endfor %}
             </div>
 
             <div id="Contributors" class="menucontent">
                 <h3 style = "margin-top: 10px">Contributors</h3><br>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p>
+					{% for c in contributors %}
+						<p style="padding-left: 30px;">Name : <span style="font-weight: 700; color: #1c6ea4;">{{c.0}}</span> | <span style="font-weight: 700; color: #1c6ea4;">{{c.1}}</span> </p>
+						<div style="padding-bottom: 15px;"></div>
+					{% endfor %}
+				</p>
             </div>
             <div id="Issues" class="menucontent">
                 <h3 style = "margin-top: 10px">Issues</h3><br>
@@ -317,6 +323,8 @@
         <div class="two">
             <a href="http://127.0.0.1:8000/contribute" class="button">Contribute</a>
             <div class="notification" style="margin-top:20px">
+            <div class="button" onclick='window.location.href="http://127.0.0.1:8000/data/api/download/{{dataset.uid}}"'>Download</div>
+            <div class="notification">
                 <h3>Requested by: <span style="font-weight: 700; color: #1c6ea4;">{{dataset.created_by.name}}</span> {% if dataset.created_by.is_premium_user %}
 					⭐
 					{% endif %}
