@@ -11,7 +11,6 @@ import json
 def userProfile(request):
 	r = http.get(url="http://127.0.0.1:8000/data/api/users/masihulla17@gmail.com/", headers={"Authorization" : "Token 26a263ec3e908a0c26ac37794d0de57054f582e1"})
 	details = r.json()
-	print(details)
 
 	return render(request, "app/profile.html", context=details)
 
