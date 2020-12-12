@@ -138,7 +138,7 @@ def deleteRequestDataset(request, requestId):
 		data = {"status": "Not Found", "status-code": 404, "message": "Uh Oh! You fumbled on something !!"}
 		return Response(data, status=status.HTTP_404_NOT_FOUND)
 
-@api_view(http_method_names=['POST', 'DELETE',]) #'PUT',
+@api_view(http_method_names=['POST', 'PUT', 'DELETE',])
 @permission_classes([IsAuthenticated])
 def contribution(request, contributionId=''):
 	if request.method == "POST":
@@ -246,7 +246,10 @@ def downloadDataset(request, requestId):
 	for member in Contributions.objects.filter(deleted=False, request_uid=requestId).values_list('contribution_time', 'contribution_uid', 'data', 'verified'):
 		writer.writerow(member)
 
-	name = Datasets.objects.get(uid=requestId).dataset_name
+	try:
+		name = Datasets.objects.get(uid=requestId).dataset_name
+	except Datasets.DoesNotExist:
+		return HttpResponse("No matching data request found with the provided requestid", status=status.HTTP_404_NOT_FOUND)
 
 	response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(name)
 

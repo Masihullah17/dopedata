@@ -104,7 +104,6 @@ def  login_required(func):
 			request.session['username'] = username
 			return func(request, **args)
 		else:
-			print("Session id not found")
 			return redirect("authentication")
 	return checkLogin
 
@@ -304,6 +303,7 @@ def getFolderId():
 			folderID = folder['id']
 	return folderID
 
+@login_required
 def uploadFileToGoogleDrive(request):
 	global gauth, gdrive
 	

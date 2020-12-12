@@ -3,7 +3,7 @@ from rest_framework import status
 from django.urls import reverse
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
-from data.models import UserProfile
+from data.models import UserProfile, Datasets
 from django.utils import timezone
 from django.forms.models import model_to_dict
 
@@ -78,3 +78,12 @@ class TestAPIView(APITestCase):
 		response = self.client.get("/data/api/contribute/")
 		self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 	
+	def test_download_notexists(self):
+		response = self.client.get("/data/api/download/14d88722-24ad-11eb-a311-d4d252846d21/")
+		self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+	def test_download(self):
+		dataset = Datasets.objects.create(uid="14d88722-24ad-11eb-a311-d4d252846d21", dataset_name="Test", description="test", usecase="testing", required_size=100, entry_time=timezone.now())
+		response = self.client.get("/data/api/download/14d88722-24ad-11eb-a311-d4d252846d21/")
+		self.assertEqual(response['content-type'], "csv")
+		self.assertEqual(response.status_code, status.HTTP_200_OK)
