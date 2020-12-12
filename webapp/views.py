@@ -217,6 +217,24 @@ def datasetRequestPage(request):
 	return render(request,"request.html")
 
 @login_required
+def contribute(request, uid):
+	data = request.POST
+	user = User.objects.get(username = request.session['username'])
+	name = user.first_name
+
+	try:
+		dataset = Datasets.objects.get(uid=uid)
+	except Datasets.DoesNotExist:
+		raise Http404
+	if request.method == 'POST':
+		dd
+
+
+		return redirect("profile")
+
+	return render(request, "contribute.html")	
+
+@login_required
 def googleDriveView(request):
 	global gdrive
 

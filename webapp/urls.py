@@ -13,6 +13,7 @@ urlpatterns = [
 	path('logout/', views.logout, name='logout'),
 	path('index/', views.index, name="index"),
 	path('request/', views.datasetRequestPage, name="datasetRequestPage"),
+	url(r'contribute/(?P<uid>[a-zA-Z0-9_-]+?)/', views.contribute, name='contribute_dataset'),
 	path('gdrive/', views.googleDriveView, name="gdrive"),
 	path('gdrive-auth/', views.googleDriveAuth, name="gdriveAuth"),
 	path('gdrive-upload/', views.uploadFileToGoogleDrive, name="gdriveUpload"),
