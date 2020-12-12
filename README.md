@@ -101,6 +101,8 @@ python manage.py runserver 127.0.0.1:8080
 * **data/tests & webapp/tests** - Folder containing all the django tests created to test the application
 * **media** - Contains all images, videos and audios we collect as part of data collection
 
+The development branch is maintained seperately for development pushes. Code is merged to main branch whenever  a submodule and it's testing is completed.
+
 ### Resources Used
 * [**Firebase Authentication API**](http://www.lib4dev.in/info/thisbejim/Pyrebase/36919582)
 * [**Google Drive API**](https://googleworkspace.github.io/PyDrive/docs/build/html/index.html)
