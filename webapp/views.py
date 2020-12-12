@@ -11,9 +11,10 @@ import os
 import requests
 import uuid
 import json
+from collections import Counter
 
 # Model Imports
-from data.models import UserProfile, Datasets, GoogleDriveConnections
+from data.models import UserProfile, Datasets, GoogleDriveConnections, Contributions
 
 # Google Drive API Imports
 from pydrive.auth import GoogleAuth
@@ -161,7 +162,11 @@ def specificDataset(request, uid):
 		dataset = Datasets.objects.get(uid=uid)
 	except Datasets.DoesNotExist:
 		raise Http404
-	badges = json.loads(dataset.created_by.badges)
+
+	# dataset.created_by.badges = json.dumps(["bronze", "silver", "gold"])
+	# dataset.save()
+
+	badges = json.loads(dataset.created_by.badges.replace("'", "\""))
 	data = json.loads(dataset.data)
 
 	datatypes = ""
@@ -169,7 +174,14 @@ def specificDataset(request, uid):
 		datatypes += question['datatype'].capitalize() +", "
 	datatypes = datatypes[:-2]
 
-	return render(request, 'dataset.html', {"dataset" : dataset, "badges" : badges, "datatypes" : datatypes, "data" : data})
+	contributions = Contributions.objects.filter(deleted=False, request_uid=uid)
+
+	contributors = []
+	for c in contributions:
+		contributors.append(c.contributed_by.name)
+	contributors = Counter(contributors).most_common()
+
+	return render(request, 'dataset.html', {"dataset" : dataset, "badges" : badges, "datatypes" : datatypes, "data" : data, "contributions" : contributions, "contributors" : contributors})
 	# return render(request, 'dataset.html')
 
 @login_required

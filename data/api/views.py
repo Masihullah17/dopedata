@@ -11,8 +11,6 @@ from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponse
 
-
-
 # Python Imports
 import json
 import uuid
@@ -37,7 +35,6 @@ def userProfile(request, username):
 	except UserProfile.DoesNotExist:
 		data = {"status": "Not Found", "status-code": 404, "message": "Uh Oh! You fumbled on something !!"}
 		return Response(data, status=status.HTTP_404_NOT_FOUND)
-
 
 @api_view(http_method_names=['GET',])
 @permission_classes([IsAuthenticated])
@@ -160,7 +157,7 @@ def postContribution(request):
 		# Check contribution data matches with request data
 		print(request.POST)
 
-		data = json.loads(request.data['data'])["data"]
+		data = json.loads(request.data['data'])
 
 		print(request.FILES)
 		for name, mediaFile in request.FILES.items():
@@ -190,6 +187,9 @@ def postContribution(request):
 		contributionCreated.save()
 
 		dataset = Datasets.objects.get(uid=request.data['request-id'])
+		dataset.num_filled += 1
+		dataset.save()
+		
 		created_by.points += dataset.points
 
 		if created_by.points > 20 and created_by.points < 50:
@@ -237,15 +237,17 @@ def deleteContribution(request, contributionId):
 		return Response(data, status=status.HTTP_404_NOT_FOUND)
 
 
-def export(request):v
-    response = HttpResponse(content_type='csv')
+def downloadDataset(request, requestId):
+	response = HttpResponse(content_type='csv')
 
-    writer = csv.writer(response)
-    writer.writerow(['time', 'id', 'data', 'verification' ])
+	writer = csv.writer(response)
+	writer.writerow(['contribution_time', 'contribution_id', 'data', 'verified' ])
 
-    for member in Contributions.objects.filter(deleted=False).values_list('contribution_time', 'contribution_uid', 'data', 'verified'):
-        writer.writerow(member)
+	for member in Contributions.objects.filter(deleted=False, request_uid=requestId).values_list('contribution_time', 'contribution_uid', 'data', 'verified'):
+		writer.writerow(member)
 
-    response['Content-Disposition'] = 'attachment; filename="contributions.csv"'
+	name = Datasets.objects.get(uid=requestId).dataset_name
 
-    return response
+	response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(name)
+
+	return response
