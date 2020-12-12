@@ -155,11 +155,8 @@ def postContribution(request):
 		time = timezone.now()
 
 		# Check contribution data matches with request data
-		print(request.POST)
-
 		data = json.loads(request.data['data'])
 
-		print(request.FILES)
 		for name, mediaFile in request.FILES.items():
 			fileSaved = FilesUploads.objects.create(uploaded_user=created_by, dataset_uid=request.POST['request-id'], contribution_id=uid, upload_time=time, uploaded_file=mediaFile)
 			initial_path = fileSaved.uploaded_file.path
@@ -211,7 +208,7 @@ def putContribution(request,contributionId):
 	try:
 		created_by = UserProfile.objects.get(name=request.user.first_name, email=request.user.username)
 
-		dataset = Contributions.objects.get(uid = contributionId, created_by = created_by)
+		dataset = Contributions.objects.get(contribution_uid= contributionId, contributed_by=created_by)
 		dataset.data = json.dumps(request.data.get('data', json.loads(dataset.data)))
 		dataset.contribution_time = timezone.now()
 		dataset.save()
