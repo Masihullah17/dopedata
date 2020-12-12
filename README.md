@@ -79,18 +79,18 @@ python manage.py createsuperuser
 
 python manage.py runserver
 ```
-## To run the django unit and integration tests
+### To run the django unit and integration tests
 ```
 python manage.py test
 ```
 
-## To run the django mock application using services
+### To run the django mock application using services
 ```
 cd mockapplication
 python manage.py runserver 127.0.0.1:8080
 ```
 
-## Project Structure
+### Project Files Structure
 * **dopedata** - Main Django application name
 * **data** - App containing the models and database work
 * **data/api** - Contains the API
@@ -101,7 +101,7 @@ python manage.py runserver 127.0.0.1:8080
 * **data/tests & webapp/tests** - Folder containing all the django tests created to test the application
 * **media** - Contains all images, videos and audios we collect as part of data collection
 
-## Resources Used
+### Resources Used
 * [**Firebase Authentication API**](http://www.lib4dev.in/info/thisbejim/Pyrebase/36919582)
 * [**Google Drive API**](https://googleworkspace.github.io/PyDrive/docs/build/html/index.html)
 * [**Django Testing**](https://www.valentinog.com/blog/testing-django/)
