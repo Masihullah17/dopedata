@@ -101,7 +101,7 @@ DATABASES = {
 		'ENGINE': 'django.db.backends.postgresql_psycopg2',
 		'NAME': 'dopedata',
 		'USER': 'masihullah',
-		'PASSWORD': 'dopedata@2020',
+		'PASSWORD': '', # YOUR DATABASE PASSWORD
 		'HOST': 'localhost',
 		'PORT': '',
 	}
@@ -160,16 +160,7 @@ MEDIA_URL = '/media/'
 
 
 import pyrebase
-firebase_config = {
-	'apiKey': "AIzaSyDLqFMmhIlGDCDWW6sOCTsm4nHQRYn9IWc",
-	'authDomain': "dopedata-2020.firebaseapp.com",
-	'databaseURL': "https://dopedata-2020.firebaseio.com",
-	'projectId': "dopedata-2020",
-	'storageBucket': "dopedata-2020.appspot.com",
-	'messagingSenderId': "152357364863",
-	'appId': "1:152357364863:web:80f65c8e6d9a5deeea4b4a",
-	'measurementId': "G-W4B8BWFKDQ"
-}
+firebase_config = {} # YOUR FIREBASE CONFIG
 
 firebase = pyrebase.initialize_app(firebase_config)
 
